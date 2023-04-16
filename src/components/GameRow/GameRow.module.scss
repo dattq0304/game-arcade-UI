@@ -1,0 +1,49 @@
+.inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-left: 14px;
+  margin-top: 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 8px;
+  overflow: hidden;
+  width: 100%;
+  white-space: nowrap;
+  transform: translateZ(0);
+  scroll-padding: 50px 50px 50px 50px;
+}
+
+.content-item {
+  margin: 0 4px;
+}
+
+.icon-wrapper {
+  height: 100%;
+  width: 80px;
+  background-color: rgba(#000000, 0.7);
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  & > svg {
+    font-size: 5rem;
+  }
+}
+
+.icon-prev {
+  left: 0;
+}
+
+.icon-next {
+  right: 0;
+}

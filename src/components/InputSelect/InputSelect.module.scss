@@ -1,0 +1,30 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 30px;
+}
+
+.title {
+  font-weight: 500;
+  font-size: 1.6rem;
+  color: var(--text-light-color);
+  margin-bottom: 5px;
+}
+
+.input {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 1.6rem;
+  padding: 14px 20px;
+  color: var(--text-light-color);
+
+  &:hover {
+    border: 1px solid white;
+  }
+}
+
+.input > option {
+  background-color: var(--background);
+  padding: 14px 20px;
+}

@@ -1,0 +1,37 @@
+.heading {
+  height: 80px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 34px;
+}
+
+.title {
+  font-weight: 700;
+}
+
+.content {
+  padding-top: 20px;
+}
+
+.btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.close-btn {
+  cursor: pointer;
+}
+
+.signup-btn,
+.submit-btn {
+  width: 200px;
+}
+
+.btn-seperate {
+  line-height: 40px;
+  font-weight: 600;
+}

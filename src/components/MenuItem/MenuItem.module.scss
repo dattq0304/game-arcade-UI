@@ -1,0 +1,47 @@
+.wrapper {
+  height: 40px;
+  width: 100%;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  font-weight: 300;
+  font-family: var(--font-family);
+  cursor: pointer;
+  background-color: transparent;
+  color: var(--text-color-light);
+  user-select: none;
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  &:hover {
+    color: var(--text-color-dark);
+  }
+}
+
+.wrapper:hover > .title {
+  transition: 0.3s;
+  transform: translateX(10px);
+}
+
+.icon {
+  min-width: 60px;
+  position: relative;
+}
+
+.title {
+  white-space: nowrap;
+  margin-left: 20px;
+}
+
+.active .icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -10px;
+  height: calc(100% + 2 * 10px);
+  width: 6px;
+  background-color: var(--primary);
+}

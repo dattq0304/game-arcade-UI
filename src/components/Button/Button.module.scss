@@ -1,0 +1,72 @@
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family);
+  font-size: 1.6rem;
+  font-weight: 600;
+  background-color: transparent;
+  cursor: pointer;
+
+  + .wrapper {
+    margin-left: 8px;
+  }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+}
+
+.border {
+  border: 2px solid var(--border-color);
+  &:hover {
+    border-color: var(--primary);
+  }
+}
+
+//Buttons have both text and icon
+.icon + .title,
+.title + .icon {
+  margin-left: 8px;
+}
+
+// Button types
+.rounded {
+  border-radius: 999px;
+  color: var(--text-color-light);
+  width: 40px;
+  height: 40px;
+}
+
+.svg {
+  font-size: 2.4rem;
+  color: var(--text-color-light);
+
+  &:hover {
+    color: var(--text-color-dark);
+  }
+}
+
+.primary {
+  height: 40px;
+  color: var(--white);
+  background-color: var(--primary);
+  border-radius: 30px;
+  padding: 8px 16px;
+
+  &:hover {
+    background-color: #8668ff;
+  }
+}
+
+.text {
+  color: var(--text-color-light);
+  border-radius: 30px;
+  height: 40px;
+  padding: 8px 16px;
+
+  &:hover {
+    color: var(--text-color-dark);
+  }
+}
