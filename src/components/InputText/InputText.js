@@ -5,7 +5,7 @@ import styles from "./InputText.module.scss";
 
 const cx = classNames.bind(styles);
 
-function Input({ title, className, type = "text", ...passProps }) {
+function Input({ name, title, className, ...passProps }) {
   const classes = cx("wrapper", {
     [className]: className,
   });
@@ -13,12 +13,13 @@ function Input({ title, className, type = "text", ...passProps }) {
   return (
     <div className={cx(classes)} {...passProps}>
       <span className={cx("title")}>{title}</span>
-      <input type={type} className={cx("input")}></input>
+      <input type="text" name={name} className={cx("input")}></input>
     </div>
   );
 }
 
 Input.propTypes = {
+  name: PropTypes.string,
   title: PropTypes.string,
   type: PropTypes.string,
   className: PropTypes.string,

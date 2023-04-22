@@ -4,7 +4,8 @@
   justify-content: center;
 }
 
-.inner {
+// SUBMIT FORM
+.form-container {
   width: 80%;
   max-width: 900px;
 }
@@ -31,6 +32,24 @@
 }
 
 .submit-wrapper {
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  > button {
+    width: 200px;
+  }
+}
+
+// VIEW REVIEW
+.review-container {
+  width: 80%;
+  max-width: 800px;
+}
+
+.finish-review {
   width: 100%;
   height: 60px;
   display: flex;

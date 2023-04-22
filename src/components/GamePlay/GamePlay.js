@@ -48,7 +48,7 @@ function GamePlay({ title, src, className, ...passProps }) {
         src={src}
         title={title}
         allow="autoplay; payment; fullscreen; microphone; focus-without-user-activation *; screen-wake-lock; gamepad; clipboard-read; clipboard-write;"
-        alowFullScreen=""
+        alowfullscreen=""
         sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-presentation allow-scripts allow-same-origin allow-downloads allow-popups"
         loading="eager"
         data-hj-allow-iframe="true"

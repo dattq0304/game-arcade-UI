@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import styles from "./Game.module.scss";
 import GamePlay from "~/components/GamePlay";
 import GameColumn from "~/components/GameColumn";
+import GameInfo from "~/components/GameInfo";
 
 const cx = classNames.bind(styles);
 
@@ -21,17 +22,12 @@ function Game() {
       <div className={cx("inner")}>
         <div className={cx("main-content")}>
           <GamePlay src={game.src}></GamePlay>
-          <div className={cx("info")}>
-            <h1 className={cx("game-name")}>{game.name}</h1>
-            <div className={cx("detail")}>
-              <h2 className={cx("detail-title")}>Control</h2>
-              <p className={cx("detail-content")}>{game.control}</p>
-            </div>
-            <div className={cx("detail")}>
-              <h2 className={cx("detail-title")}>Description</h2>
-              <p className={cx("detail-content")}>{game.description}</p>
-            </div>
-          </div>
+          <GameInfo
+            name={game.name}
+            control={game.control}
+            description={game.description}
+            className={cx("detail")}
+          ></GameInfo>
         </div>
 
         <div className={cx("recommened")}>

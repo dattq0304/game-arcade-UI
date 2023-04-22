@@ -7,7 +7,7 @@ import styles from "./InputImage.module.scss";
 
 const cx = classNames.bind(styles);
 
-function Input({ title, description, image, className, ...passProps }) {
+function Input({ name, title, image, className, ...passProps }) {
   const classes = cx("wrapper", {
     [className]: className,
   });
@@ -17,7 +17,12 @@ function Input({ title, description, image, className, ...passProps }) {
       <span className={cx("title")}>Cover Image</span>
       <div className={cx("image-wrapper")}>
         <div className={cx("preview")}>
-          <input type="file" className={cx("input")}></input>
+          <input
+            name={name}
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            className={cx("input")}
+          ></input>
           {image ? (
             <img src={image} className={cx("preview-image")} alt="Preview" />
           ) : (
@@ -27,15 +32,20 @@ function Input({ title, description, image, className, ...passProps }) {
             ></FontAwesomeIcon>
           )}
         </div>
-        <p className={cx("note")}>{description}</p>
+        <p className={cx("note")}>
+          Upload a cover image of your game. This can be a stylized image
+          containing your game art and title. A cover should at least be 712
+          pixels wide and 400 pixels high. The cover should not include any
+          "Play" or "Start" button or any mobile app icons.
+        </p>
       </div>
     </div>
   );
 }
 
 Input.propTypes = {
+  name: PropTypes.string,
   title: PropTypes.string,
-  description: PropTypes.string,
   className: PropTypes.string,
 };
 
