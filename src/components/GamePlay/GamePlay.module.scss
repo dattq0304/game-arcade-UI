@@ -22,7 +22,7 @@
   aspect-ratio: auto 16 / 9;
   overflow: hidden;
   border: none;
-  background-color: #dddddd;
+  background-color: var(--background);
 }
 
 .game-actions {

@@ -36,7 +36,11 @@ function GamePreview({
     <div className={classes} {...props}>
       <Link to={to}>
         <label className={cx("status")}></label>
-        <img className={cx("game-image")} src={previewImage} alt=""></img>
+        {/* <img className={cx("game-image")} src={previewImage} alt=""></img> */}
+        <div
+          className={cx("game-image")}
+          style={{ backgroundImage: `url('${previewImage}')` }}
+        ></div>
       </Link>
     </div>
   );

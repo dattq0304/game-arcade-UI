@@ -1,5 +1,6 @@
-import classNames from "classnames/bind";
 import { useState, useRef } from "react";
+import { Navigate } from "react-router-dom";
+import classNames from "classnames/bind";
 import axios from "axios";
 import jszip from "jszip";
 
@@ -9,7 +10,6 @@ import InputText from "~/components/InputText";
 import InputSelect from "~/components/InputSelect";
 import InputFolder from "~/components/InputFolder";
 import InputImage from "~/components/InputImage";
-import GamePlay from "~/components/GamePlay";
 
 const cx = classNames.bind(styles);
 
@@ -23,14 +23,28 @@ function Upload() {
   const [filesUploaded, setFilesUploaded] = useState([]);
   const [previewImage, setPreviewImage] = useState();
   const [coverImage, setCoverImage] = useState(null);
-  const [review, setReview] = useState(false);
-  const [gamePath, setGamePath] = useState("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const gameId = useRef("");
 
   const baseUrl = "http://localhost:3001/api";
   const uploadUrl = `${baseUrl}/upload`;
-  const gameUrl = `${baseUrl}/game`;
+
+  // const goToPreviewGameScreen = () => {
+  //   window.open(`/demo/${gameId.current}`, "_blank");
+  //   return <Navigate to={`/edit/${gameId.current}`} />;
+  // };
+
+  const goToPreviewGameScreen = () => {
+    const newWindow = window.open(`/demo/${gameId.current}`, "_blank");
+
+    const intervalId = setInterval(() => {
+      if (newWindow.closed) {
+        clearInterval(intervalId);
+        return <Navigate to={`/edit/${gameId.current}`} />;
+      }
+    }, 1000);
+  };
 
   const handleChangeCoverImage = (e) => {
     setPreviewImage(URL.createObjectURL(e.target.files[0]));
@@ -55,14 +69,14 @@ function Upload() {
 
   const handleSubmitForm = async (e) => {
     e.preventDefault();
-    setReview(true);
+    setIsSubmitted(true);
     await uploadInfo();
     if (type === "HTML5") {
       await uploadSourceCode();
     }
     await uploadCoverImage();
     goToPreviewGameScreen();
-    console.log("id", gameId);
+    console.log("id", gameId.current);
   };
 
   const uploadInfo = async () => {
@@ -138,34 +152,9 @@ function Upload() {
     }
   };
 
-  const goToPreviewGameScreen = async () => {
-    try {
-      const url = `${gameUrl}/${gameId.current}`;
-      const res = await axios.get(url);
-
-      if (res.data.type === "HTML5") {
-        setGamePath(`${url}/index.html`);
-      } else {
-        setGamePath(res.data.path);
-      }
-
-      setReview(true);
-      console.log("goToPreviewGameScreen - Server:", res);
-    } catch (err) {
-      console.error("goToPreviewGameScreen - Client", err);
-    }
-  };
-
-  const handleGobackClick = (e) => {
-    setReview(false);
-  };
-
   return (
     <div className={cx("wrapper")}>
-      <div
-        className={cx("form-container")}
-        style={review ? { display: "none" } : { display: "block" }}
-      >
+      <div className={cx("form-container")}>
         <h1 className={cx("title")}>Submit Game</h1>
         <form id="game-upload">
           <div className={cx("details")}>
@@ -173,26 +162,22 @@ function Upload() {
             <InputText
               name="name"
               title="Name"
-              value={name}
               onChange={(e) => setName(e.target.value)}
             ></InputText>
             <InputSelect
               name="category"
               title="Category"
               options={categories}
-              value={category}
               onChange={(e) => setCategory(e.target.value)}
             ></InputSelect>
             <InputText
               name="description"
               title="Description"
-              value={description}
               onChange={(e) => setDescription(e.target.value)}
             ></InputText>
             <InputText
               name="control"
               title="Control"
-              value={control}
               onChange={(e) => setControl(e.target.value)}
             ></InputText>
           </div>
@@ -203,7 +188,6 @@ function Upload() {
               name="game-type"
               title="Game type"
               options={gameUploadType}
-              value={type}
               onChange={handleSelectGameUploadType}
             ></InputSelect>
 
@@ -212,7 +196,6 @@ function Upload() {
                 name="source-code"
                 title="Folder Upload"
                 filesUploaded={filesUploaded}
-                value={filesUploaded}
                 setFilesUploaded={setFilesUploaded}
               ></InputFolder>
             )}
@@ -235,31 +218,12 @@ function Upload() {
           <div className={cx("details")}>
             <div className={cx("submit-wrapper")}>
               <Button primary type="submit" onClick={handleSubmitForm}>
-                Submit
+                {isSubmitted ? "Update" : "Upload"}
               </Button>
             </div>
           </div>
         </form>
       </div>
-      {review && (
-        <div className={cx("review-container")}>
-          <h1>Review</h1>
-          <GamePlay src={gamePath}></GamePlay>
-          <div className={cx("finish-review")}>
-            <Button
-              className={cx("go-back")}
-              text
-              border
-              onClick={handleGobackClick}
-            >
-              Go Back
-            </Button>
-            <Button primary type="submit">
-              Finish review
-            </Button>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

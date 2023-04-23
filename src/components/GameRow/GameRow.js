@@ -1,92 +1,52 @@
+import { useRef, useState } from "react";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 import styles from "./GameRow.module.scss";
 import GamePreview from "../GamePreview/GamePreview";
 
 const cx = classNames.bind(styles);
 
-function GameRow({}) {
-  const category = "New Game";
-  const gameList = [
-    {
-      to: "http://localhost:3000/game",
-      name: "fake name",
-      previewImage:
-        "https://images.crazygames.com/smash-karts/20201119155032/smash-karts-cover",
-    },
-    {
-      to: "http://localhost:3000/game",
-      name: "fake name",
-      previewImage:
-        "https://images.crazygames.com/smash-karts/20201119155032/smash-karts-cover",
-    },
-    {
-      to: "http://localhost:3000/game",
-      name: "fake name",
-      previewImage:
-        "https://images.crazygames.com/smash-karts/20201119155032/smash-karts-cover",
-    },
-    {
-      to: "http://localhost:3000/game",
-      name: "fake name",
-      previewImage:
-        "https://images.crazygames.com/smash-karts/20201119155032/smash-karts-cover",
-    },
-    {
-      to: "http://localhost:3000/game",
-      name: "fake name",
-      previewImage:
-        "https://images.crazygames.com/smash-karts/20201119155032/smash-karts-cover",
-    },
-    {
-      to: "http://localhost:3000/game",
-      name: "fake name",
-      previewImage:
-        "https://images.crazygames.com/smash-karts/20201119155032/smash-karts-cover",
-    },
-    {
-      to: "http://localhost:3000/game",
-      name: "fake name",
-      previewImage:
-        "https://images.crazygames.com/smash-karts/20201119155032/smash-karts-cover",
-    },
-    {
-      to: "http://localhost:3000/game",
-      name: "fake name",
-      previewImage:
-        "https://images.crazygames.com/smash-karts/20201119155032/smash-karts-cover",
-    },
-    {
-      to: "http://localhost:3000/game",
-      name: "fake name",
-      previewImage:
-        "https://images.crazygames.com/smash-karts/20201119155032/smash-karts-cover",
-    },
-    {
-      to: "http://localhost:3000/game",
-      name: "fake name",
-      previewImage:
-        "https://images.crazygames.com/smash-karts/20201119155032/smash-karts-cover",
-    },
-    {
-      to: "http://localhost:3000/game",
-      name: "fake name",
-      previewImage:
-        "https://images.crazygames.com/smash-karts/20201119155032/smash-karts-cover",
-    },
-  ];
+const GameRow = ({ title, type, category }) => {
+  const [ready, setReady] = useState(false);
+  const gameList = useRef([]);
+
+  const gamePlayUrl = "http://localhost:3000/game/";
+  const coverImageUrl = "http://localhost:3001/api/game/image/";
+
+  const getGameList = async () => {
+    try {
+      let url = "";
+      if (category) {
+        url = `http://localhost:3001/api/game/category/${category}`;
+      } else if (type) {
+        url = `http://localhost:3001/api/game/${type}`;
+      }
+
+      const res = await axios.get(url);
+      gameList.current = res.data;
+      if (res.data.length > 0) {
+        setReady(true);
+      }
+      console.log("getGameList - Server:", res);
+    } catch (err) {
+      console.error("getGameList - Client", err);
+    }
+  };
+  getGameList();
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("inner")}>
-        <label className={cx("title")}>{category}</label>
+      {ready && (
+        <div className={cx("inner")}>
+          <label className={cx("title")}>{title}</label>
 
-        {/* <div className={cx("icon-wrapper", "icon-next")}>
+          {/* <div className={cx("icon-wrapper", "icon-next")}>
           <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
         </div>
 
@@ -94,22 +54,23 @@ function GameRow({}) {
           <FontAwesomeIcon icon={faChevronLeft}></FontAwesomeIcon>
         </div> */}
 
-        <ul className={cx("content")}>
-          {gameList.map((game, index) => {
-            return (
-              <li key={index} className={cx("content-item")}>
-                <GamePreview
-                  medium
-                  previewImage={game.previewImage}
-                  to={game.to}
-                ></GamePreview>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
+          <ul className={cx("content")}>
+            {gameList.current.map((game, index) => {
+              return (
+                <li key={index} className={cx("content-item")}>
+                  <GamePreview
+                    medium
+                    previewImage={coverImageUrl + game._id}
+                    to={gamePlayUrl + game._id}
+                  ></GamePreview>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default GameRow;

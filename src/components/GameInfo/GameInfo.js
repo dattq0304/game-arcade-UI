@@ -13,14 +13,18 @@ function GameInfo({ name, control, description, className, ...passProps }) {
   return (
     <div className={cx(classes)}>
       <h1 className={cx("game-name")}>{name}</h1>
-      <div className={cx("detail")}>
-        <h2 className={cx("detail-title")}>Control</h2>
-        <p className={cx("detail-content")}>{control}</p>
-      </div>
-      <div className={cx("detail")}>
-        <h2 className={cx("detail-title")}>Description</h2>
-        <p className={cx("detail-content")}>{description}</p>
-      </div>
+      {control.length > 0 && (
+        <div className={cx("detail")}>
+          <h2 className={cx("detail-title")}>Control</h2>
+          <p className={cx("detail-content")}>{control}</p>
+        </div>
+      )}
+      {description.length > 0 && (
+        <div className={cx("detail")}>
+          <h2 className={cx("detail-title")}>Description</h2>
+          <p className={cx("detail-content")}>{description}</p>
+        </div>
+      )}
     </div>
   );
 }

@@ -5,7 +5,7 @@ import styles from "./InputSelect.module.scss";
 
 const cx = classNames.bind(styles);
 
-function Input({ name, title, options, className, ...passProps }) {
+const InputSelect = ({ name, title, options, className, ...passProps }) => {
   const classes = cx("wrapper", {
     [className]: className,
   });
@@ -25,13 +25,13 @@ function Input({ name, title, options, className, ...passProps }) {
       </select>
     </div>
   );
-}
+};
 
-Input.propTypes = {
+InputSelect.propTypes = {
   name: PropTypes.string,
   title: PropTypes.string,
   options: PropTypes.array,
   className: PropTypes.string,
 };
 
-export default Input;
+export default InputSelect;
