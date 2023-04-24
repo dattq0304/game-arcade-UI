@@ -45,7 +45,6 @@ const GameColumn = ({ title, type, category }) => {
               return (
                 <li key={index} className={cx("content-item")}>
                   <GamePreview
-                    small
                     previewImage={coverImageUrl + game._id}
                     to={gamePlayUrl + game._id}
                   ></GamePreview>

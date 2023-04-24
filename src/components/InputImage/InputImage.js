@@ -33,10 +33,11 @@ function Input({ name, title, image, className, ...passProps }) {
           )}
         </div>
         <p className={cx("note")}>
-          Upload a cover image of your game. This can be a stylized image
-          containing your game art and title. A cover should at least be 712
-          pixels wide and 400 pixels high. The cover should not include any
-          "Play" or "Start" button or any mobile app icons.
+          Upload a cover image of your game in PNG, JPG, or JPEG format. This
+          can be a stylized image containing your game art and title. A cover
+          should at least be 712 pixels wide and 400 pixels high. The cover
+          should not include any "Play" or "Start" button or any mobile app
+          icons.
         </p>
       </div>
     </div>

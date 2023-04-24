@@ -52,12 +52,18 @@ function Upload() {
   };
 
   const categories = [
-    "2 players",
     "Action",
     "Sport",
+    "Quiz",
+    "Gun",
     "Puzzle",
     "Beauty",
+    "Gambling",
     "Car",
+    "Bike",
+    "Jet Fighter",
+    "2 players",
+    "Minecraft",
     "Other",
   ];
 

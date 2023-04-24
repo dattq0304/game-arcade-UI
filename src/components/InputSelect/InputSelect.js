@@ -13,11 +13,11 @@ const InputSelect = ({ name, title, options, className, ...passProps }) => {
   return (
     <div className={classes} {...passProps}>
       <span className={cx("title")}>{title}</span>
-      <select className={cx("input")} name={name} defaultValue="hide">
+      <select className={cx("select")} name={name} defaultValue="hide">
         <option value="hide" disabled hidden></option>
         {options.map((element, index) => {
           return (
-            <option value={element} key={index}>
+            <option className={cx("option")} value={element} key={index}>
               {element}
             </option>
           );

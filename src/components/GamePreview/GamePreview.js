@@ -10,9 +10,6 @@ function GamePreview({
   to,
   previewImage,
   className,
-  small = true,
-  medium = false,
-  large = false,
   hot = false,
   recent = false,
   toprated = false,
@@ -24,9 +21,6 @@ function GamePreview({
 
   const classes = cx("wrapper", {
     [className]: className,
-    small,
-    medium,
-    large,
     hot,
     recent,
     toprated,
@@ -36,7 +30,6 @@ function GamePreview({
     <div className={classes} {...props}>
       <Link to={to}>
         <label className={cx("status")}></label>
-        {/* <img className={cx("game-image")} src={previewImage} alt=""></img> */}
         <div
           className={cx("game-image")}
           style={{ backgroundImage: `url('${previewImage}')` }}
@@ -50,9 +43,6 @@ GamePreview.prototype = {
   to: PropTypes.string,
   previewImage: PropTypes.string,
   className: PropTypes.string,
-  small: PropTypes.bool,
-  medium: PropTypes.bool,
-  large: PropTypes.bool,
   hot: PropTypes.bool,
   recent: PropTypes.bool,
   toprated: PropTypes.bool,

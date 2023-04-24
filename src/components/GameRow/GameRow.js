@@ -40,6 +40,21 @@ const GameRow = ({ title, type, category }) => {
   };
   getGameList();
 
+  // const [isChildLarger, setIsChildLarger] = useState(false);
+  // const parentRef = useRef(null);
+  // const childRef = useRef(null);
+
+  // useEffect(() => {
+  //   const parent = parentRef.current;
+  //   const child = childRef.current;
+
+  //   if (child.offsetWidth > parent.offsetWidth || child.offsetHeight > parent.offsetHeight) {
+  //     setIsChildLarger(true);
+  //   } else {
+  //     setIsChildLarger(false);
+  //   }
+  // }, []);
+
   return (
     <div className={cx("wrapper")}>
       {ready && (
@@ -47,19 +62,18 @@ const GameRow = ({ title, type, category }) => {
           <label className={cx("title")}>{title}</label>
 
           {/* <div className={cx("icon-wrapper", "icon-next")}>
-          <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
-        </div>
+            <FontAwesomeIcon icon={faChevronRight}></FontAwesomeIcon>
+          </div>
 
-        <div className={cx("icon-wrapper", "icon-prev")}>
-          <FontAwesomeIcon icon={faChevronLeft}></FontAwesomeIcon>
-        </div> */}
+          <div className={cx("icon-wrapper", "icon-prev")}>
+            <FontAwesomeIcon icon={faChevronLeft}></FontAwesomeIcon>
+          </div> */}
 
           <ul className={cx("content")}>
             {gameList.current.map((game, index) => {
               return (
                 <li key={index} className={cx("content-item")}>
                   <GamePreview
-                    medium
                     previewImage={coverImageUrl + game._id}
                     to={gamePlayUrl + game._id}
                   ></GamePreview>

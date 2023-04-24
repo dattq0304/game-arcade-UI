@@ -13,13 +13,13 @@ function GameInfo({ name, control, description, className, ...passProps }) {
   return (
     <div className={cx(classes)}>
       <h1 className={cx("game-name")}>{name}</h1>
-      {control.length > 0 && (
+      {control === "" && (
         <div className={cx("detail")}>
           <h2 className={cx("detail-title")}>Control</h2>
           <p className={cx("detail-content")}>{control}</p>
         </div>
       )}
-      {description.length > 0 && (
+      {description === "" && (
         <div className={cx("detail")}>
           <h2 className={cx("detail-title")}>Description</h2>
           <p className={cx("detail-content")}>{description}</p>

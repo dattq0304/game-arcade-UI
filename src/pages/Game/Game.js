@@ -12,7 +12,6 @@ const cx = classNames.bind(styles);
 
 function Game() {
   const { id } = useParams();
-  // const [game,  setGame]
   const [path, setPath] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");

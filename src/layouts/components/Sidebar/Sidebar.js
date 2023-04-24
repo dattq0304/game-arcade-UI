@@ -14,6 +14,13 @@ import {
   faChildDress,
   faCar,
   faHouse,
+  faBicycle,
+  faCubes,
+  faQuestion,
+  faGun,
+  faJetFighterUp,
+  faUpRightFromSquare,
+  faDice,
 } from "@fortawesome/free-solid-svg-icons";
 import { faFreeCodeCamp } from "@fortawesome/free-brands-svg-icons";
 
@@ -34,23 +41,15 @@ function Sidebar(props) {
     },
     {
       leftIcon: faClock,
-      title: "Recent",
-    },
-    {
-      leftIcon: faStar,
       title: "New",
-    },
-    {
-      leftIcon: faArrowTrendUp,
-      title: "Trending",
     },
     {
       leftIcon: faShuffle,
       title: "Random",
     },
     {
-      leftIcon: faPeopleArrows,
-      title: "2 players",
+      leftIcon: faArrowTrendUp,
+      title: "Trending",
     },
     {
       leftIcon: faFreeCodeCamp,
@@ -61,6 +60,14 @@ function Sidebar(props) {
       title: "Sport",
     },
     {
+      leftIcon: faQuestion,
+      title: "Quiz",
+    },
+    {
+      leftIcon: faGun,
+      title: "Gun",
+    },
+    {
       leftIcon: faPuzzlePiece,
       title: "Puzzle",
     },
@@ -69,8 +76,32 @@ function Sidebar(props) {
       title: "Beauty",
     },
     {
+      leftIcon: faDice,
+      title: "Gambling",
+    },
+    {
       leftIcon: faCar,
       title: "Car",
+    },
+    {
+      leftIcon: faBicycle,
+      title: "Bike",
+    },
+    {
+      leftIcon: faJetFighterUp,
+      title: "Jet Fighter",
+    },
+    {
+      leftIcon: faPeopleArrows,
+      title: "2 players",
+    },
+    {
+      leftIcon: faCubes,
+      title: "Minecraft",
+    },
+    {
+      leftIcon: faUpRightFromSquare,
+      title: "Other",
     },
   ];
 
