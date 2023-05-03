@@ -12,7 +12,7 @@ import GamePreview from "../GamePreview/GamePreview";
 
 const cx = classNames.bind(styles);
 
-const GameRow = ({ title, type, category }) => {
+function GameRow({ title, type, category }) {
   const [ready, setReady] = useState(false);
   const gameList = useRef([]);
 

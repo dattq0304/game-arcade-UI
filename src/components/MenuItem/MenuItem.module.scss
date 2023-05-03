@@ -27,6 +27,8 @@
 }
 
 .icon {
+  display: flex;
+  justify-content: center;
   min-width: 60px;
   position: relative;
 }
@@ -44,4 +46,8 @@
   height: calc(100% + 2 * 10px);
   width: 6px;
   background-color: var(--primary);
+}
+
+.small {
+  font-size: 1.6rem;
 }

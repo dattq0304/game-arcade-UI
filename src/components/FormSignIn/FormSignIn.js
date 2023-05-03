@@ -2,8 +2,8 @@ import classNames from "classnames/bind";
 import { useState } from "react";
 
 import styles from "./FormSignIn.module.scss";
-import SignIn from "~/components/SignIn";
-import SignUp from "~/components/SignUp";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 const cx = classNames.bind(styles);
 

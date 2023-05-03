@@ -24,7 +24,6 @@ function Upload() {
       } else {
         setGamePath(res.data.path);
       }
-      console.log(url);
 
       console.log("goToPreviewGameScreen - Server:", res);
     } catch (err) {

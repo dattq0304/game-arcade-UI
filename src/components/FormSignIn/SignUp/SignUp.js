@@ -12,6 +12,7 @@ const cx = classNames.bind(styles);
 function SignUp({ handleClickCloseBtn, setActionToSignIn }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleSignUp = (event) => {
     event.preventDefault();
@@ -29,17 +30,29 @@ function SignUp({ handleClickCloseBtn, setActionToSignIn }) {
       <form onSubmit={handleSignUp} id="sign-in">
         <div className={cx("content")}>
           <InputText
+            className={cx('input-field')}
+            name="username"
             title="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           ></InputText>
           <InputText
+            className={cx('input-field')}
+            name="email"
+            title="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          ></InputText>
+          <InputText
+            className={cx('input-field')}
+            name="password"
             title="Password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           ></InputText>
           <InputText
+            className={cx('input-field')}
             title="Confirm Your Password"
             type="password"
             value={password}

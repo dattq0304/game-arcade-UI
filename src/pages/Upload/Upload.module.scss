@@ -1,44 +1,56 @@
 .wrapper {
-  width: 100%;
   display: flex;
   justify-content: center;
 }
 
-// SUBMIT FORM
-.form-container {
-  width: 80%;
-  max-width: 900px;
+.inner {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.header {
+  margin: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .title {
   color: var(--white);
   font-size: 3.6rem;
   font-weight: 800;
-  padding: 30px 20px;
 }
 
-.details {
-  background-color: #13141e;
+.subtitle {
+  color: var(--white);
+  font-size: 2rem;
+  font-weight: 600;
+  height: 100px;
+  margin-left: 40px;
+}
+
+.content {
+  background-color: var(--light-background);
   border-radius: 30px;
-  padding: 0 30px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
-.details-title {
-  color: var(--text-light-color);
-  font-size: 2.6rem;
-  font-weight: 700;
-  padding: 20px 0;
-}
+.table {
+  margin: 0 40px;
+  padding: 40px 0;
+  width: calc(100% - 80px);
 
-.submit-wrapper {
-  width: 100%;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  > button {
-    width: 200px;
+  tr {
+    height: 40px;
+    min-height: 40px;
   }
+
+  th {
+    text-align: start;
+  }
+}
+
+.action-icon {
+  margin-right: 4px;
 }

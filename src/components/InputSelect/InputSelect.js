@@ -1,11 +1,10 @@
 import classNames from "classnames/bind";
-import PropTypes from "prop-types";
 
 import styles from "./InputSelect.module.scss";
 
 const cx = classNames.bind(styles);
 
-const InputSelect = ({ name, title, options, className, ...passProps }) => {
+function InputSelect({ name, title, options, className, value = "hide", onChange, ...passProps }) {
   const classes = cx("wrapper", {
     [className]: className,
   });
@@ -13,7 +12,7 @@ const InputSelect = ({ name, title, options, className, ...passProps }) => {
   return (
     <div className={classes} {...passProps}>
       <span className={cx("title")}>{title}</span>
-      <select className={cx("select")} name={name} defaultValue="hide">
+      <select className={cx("select")} name={name} value={value} onChange={onChange}>
         <option value="hide" disabled hidden></option>
         {options.map((element, index) => {
           return (
@@ -25,13 +24,6 @@ const InputSelect = ({ name, title, options, className, ...passProps }) => {
       </select>
     </div>
   );
-};
-
-InputSelect.propTypes = {
-  name: PropTypes.string,
-  title: PropTypes.string,
-  options: PropTypes.array,
-  className: PropTypes.string,
 };
 
 export default InputSelect;

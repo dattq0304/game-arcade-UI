@@ -29,11 +29,15 @@ function SignIn({ handleClickCloseBtn, setActionToSignUp }) {
       <form onSubmit={handleSignIn} id="sign-in">
         <div className={cx("content")}>
           <InputText
+            className={cx('input-field')}
+            name="username"
             title="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           ></InputText>
           <InputText
+            className={cx('input-field')}
+            name="password"
             title="Password"
             type="password"
             value={password}

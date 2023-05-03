@@ -2,8 +2,9 @@ const routes = {
   home: "/",
   game: "/game/:id",
   upload: "/upload",
-  edit: "/edit/:id",
-  demo: "/demo/:id",
+  submit: "/upload/submit",
+  edit: "/upload/edit/:id",
+  demo: "/upload/demo/:id",
 };
 
 export default routes;

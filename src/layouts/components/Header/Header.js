@@ -10,6 +10,7 @@ import logo from "~/assets/images/logo192.png";
 import Button from "~/components/Button/Button";
 import Search from "../Search";
 import FormSignIn from "~/components/FormSignIn";
+import Profile from "~/components/Profile";
 
 const cx = classNames.bind(styles);
 
@@ -38,13 +39,14 @@ function Header() {
           <Button leftIcon={<FontAwesomeIcon icon={faHeart} />} text>
             My games
           </Button>
-          <Button
+          <Profile></Profile>
+          {/* <Button
             leftIcon={<FontAwesomeIcon icon={faUser} />}
             primary
             onClick={handleClickSignIn}
           >
             Sign in
-          </Button>
+          </Button> */}
           {showSignIn && (
             <FormSignIn handleClickSignIn={handleClickSignIn}></FormSignIn>
           )}

@@ -5,7 +5,7 @@ import GameRow from "~/components/GameRow";
 
 const cx = classNames.bind(styles);
 
-const Home = () => {
+function Home() {
   return (
     <div className={cx("wrapper")}>
       <div className={cx("inner")}>

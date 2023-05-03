@@ -10,6 +10,7 @@ function MenuItem({
   href,
   active = false,
   disabled = false,
+  small = false,
   className,
   leftIcon,
   rightIcon,
@@ -43,6 +44,7 @@ function MenuItem({
     [className]: className,
     active,
     disabled,
+    small,
     leftIcon,
     rightIcon,
   });
