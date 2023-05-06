@@ -1,7 +1,9 @@
 import classNames from "classnames/bind";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useCookies } from 'react-cookie';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 import styles from "./SignIn.module.scss";
 import InputText from "~/components/InputText";
@@ -12,10 +14,36 @@ const cx = classNames.bind(styles);
 function SignIn({ handleClickCloseBtn, setActionToSignUp }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [cookies, setCookie] = useCookies(['token']);
 
-  const handleSignIn = (event) => {
+  const handleSignIn = async (event) => {
     event.preventDefault();
     console.log("Sign In With:", username, password);
+
+    try {
+      const formData = new FormData();
+      formData.append("username", username);
+      formData.append("password", password);
+
+      const urlencoded = new URLSearchParams(formData).toString();
+      const res = await axios.post(
+        `http://localhost:3001/api/user/login`,
+        urlencoded,
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+
+      setCookie('token', res.data.token, { path: '/' });
+
+      console.log("handleSignIn - Server:", res);
+      window.location.reload();
+    } catch (err) {
+      alert("Username or password incorrect!");
+      console.error("handleSignUp - Client", err);
+    }
   };
 
   return (

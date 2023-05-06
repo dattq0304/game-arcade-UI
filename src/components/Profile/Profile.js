@@ -16,7 +16,7 @@ function Profile() {
 
   return <div className={cx('wrapper')} onClick={toggleUserSidebar}>
     <img className={cx('avatar')} src="https://images.crazygames.com/userportal/avatars/9.png"></img>
-    {showUserSidebar && <UserSidebar toggleUserSidebar={toggleUserSidebar} role="admin"></UserSidebar>}
+    {showUserSidebar && <UserSidebar toggleUserSidebar={toggleUserSidebar}></UserSidebar>}
   </div>
 }
 

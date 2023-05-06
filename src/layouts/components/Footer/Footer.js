@@ -19,10 +19,11 @@ function Footer() {
     <footer className={cx("wrapper")}>
       <div className={cx("inner")}>
         <div className={cx("media")}>
-          <Button rounded border svg href="https://tiktok.com" target="blank">
+          <Button className={cx('media-item')} rounded border svg href="https://tiktok.com" target="blank">
             <FontAwesomeIcon icon={faTiktok}></FontAwesomeIcon>
           </Button>
           <Button
+            className={cx('media-item')}
             rounded
             border
             svg
@@ -32,6 +33,7 @@ function Footer() {
             <FontAwesomeIcon icon={faFacebook}></FontAwesomeIcon>
           </Button>
           <Button
+            className={cx('media-item')}
             rounded
             border
             svg
@@ -40,13 +42,13 @@ function Footer() {
           >
             <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>
           </Button>
-          <Button rounded border svg href="https://youtube.com" target="blank">
+          <Button className={cx('media-item')} rounded border svg href="https://youtube.com" target="blank">
             <FontAwesomeIcon icon={faYoutube}></FontAwesomeIcon>
           </Button>
-          <Button rounded border svg href="https://twitter.com" target="blank">
+          <Button className={cx('media-item')} rounded border svg href="https://twitter.com" target="blank">
             <FontAwesomeIcon icon={faTwitter}></FontAwesomeIcon>
           </Button>
-          <Button rounded border svg href="https://linkedin.com" target="blank">
+          <Button className={cx('media-item')} rounded border svg href="https://linkedin.com" target="blank">
             <FontAwesomeIcon icon={faLinkedin}></FontAwesomeIcon>
           </Button>
         </div>

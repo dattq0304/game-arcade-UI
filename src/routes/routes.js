@@ -10,6 +10,7 @@ import Upload from "~/pages/Upload";
 import Submit from "~/pages/Submit";
 import Edit from "~/pages/Edit";
 import GameDemo from "~/pages/GameDemo";
+import AllGames from "~/pages/AllGames";
 
 // Public routes
 const publicRoutes = [
@@ -19,6 +20,7 @@ const publicRoutes = [
   { path: config.routes.submit, component: Submit, layout: NoSidebar },
   { path: config.routes.edit, component: Edit, layout: NoSidebar },
   { path: config.routes.demo, component: GameDemo, layout: NoSidebar },
+  { path: config.routes.allGames, component: AllGames, layout: NoSidebar },
 ];
 
 const privateRoutes = [];

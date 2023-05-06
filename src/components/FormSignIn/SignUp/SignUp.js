@@ -1,5 +1,7 @@
 import classNames from "classnames/bind";
 import { useState } from "react";
+import { useCookies } from 'react-cookie';
+import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
@@ -13,10 +15,37 @@ function SignUp({ handleClickCloseBtn, setActionToSignIn }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+  const [cookies, setCookie] = useCookies(['token']);
 
-  const handleSignUp = (event) => {
+  const handleSignUp = async (event) => {
     event.preventDefault();
-    console.log("Sign Up With:", username, password);
+    console.log("Sign In With:", username, password);
+
+    try {
+      const formData = new FormData();
+      formData.append("username", username);
+      formData.append("password", password);
+      formData.append("email", email);
+
+      const urlencoded = new URLSearchParams(formData).toString();
+      const res = await axios.post(
+        `http://localhost:3001/api/user/register`,
+        urlencoded,
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      );
+
+      setCookie('token', res.data.token, { path: '/' });
+
+      console.log("handleSignIn - Server:", res);
+      window.location.reload();
+    } catch (err) {
+      alert("Username or email was used!");
+      console.error("handleSignUp - Client", err);
+    }
   };
 
   return (

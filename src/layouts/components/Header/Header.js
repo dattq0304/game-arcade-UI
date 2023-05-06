@@ -1,6 +1,6 @@
 import classNames from "classnames/bind";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import config from "~/config";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faHeart } from "@fortawesome/free-regular-svg-icons";
@@ -11,15 +11,24 @@ import Button from "~/components/Button/Button";
 import Search from "../Search";
 import FormSignIn from "~/components/FormSignIn";
 import Profile from "~/components/Profile";
+import { UserContext } from "~/store/userContext";
 
 const cx = classNames.bind(styles);
 
 function Header() {
+  // const [showAction, setShowAction] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
+  const user = useContext(UserContext);
 
   const handleClickSignIn = () => {
     setShowSignIn(!showSignIn);
   };
+
+  // useEffect(() => {
+  //   if (user) {
+  //     // setShowSignIn()
+  //   }
+  // }, [user]);
 
   return (
     <header className={cx("wrapper")}>
@@ -39,14 +48,14 @@ function Header() {
           <Button leftIcon={<FontAwesomeIcon icon={faHeart} />} text>
             My games
           </Button>
-          <Profile></Profile>
-          {/* <Button
+          {user && <Profile></Profile>}
+          {!user && <Button
             leftIcon={<FontAwesomeIcon icon={faUser} />}
             primary
             onClick={handleClickSignIn}
           >
             Sign in
-          </Button> */}
+          </Button>}
           {showSignIn && (
             <FormSignIn handleClickSignIn={handleClickSignIn}></FormSignIn>
           )}

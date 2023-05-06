@@ -1,59 +1,34 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
-import axios from "axios";
 
 import styles from "./GameRow.module.scss";
 import GamePreview from "../GamePreview/GamePreview";
+import * as GameServices from "~/api/services/game";
 
 const cx = classNames.bind(styles);
 
-function GameRow({ title, type, category }) {
+function GameRow({ title, category, type }) {
   const [ready, setReady] = useState(false);
   const gameList = useRef([]);
 
   const gamePlayUrl = "http://localhost:3000/game/";
   const coverImageUrl = "http://localhost:3001/api/game/image/";
 
-  const getGameList = async () => {
-    try {
-      let url = "";
-      if (category) {
-        url = `http://localhost:3001/api/game/category/${category}`;
-      } else if (type) {
-        url = `http://localhost:3001/api/game/${type}`;
-      }
-
-      const res = await axios.get(url);
-      gameList.current = res.data;
-      if (res.data.length > 0) {
+  useEffect(() => {
+    const getGameList = async () => {
+      const res = await GameServices.getGameList(category, type);
+      gameList.current = res;
+      if (res.length > 0) {
         setReady(true);
       }
-      console.log("getGameList - Server:", res);
-    } catch (err) {
-      console.error("getGameList - Client", err);
-    }
-  };
-  getGameList();
-
-  // const [isChildLarger, setIsChildLarger] = useState(false);
-  // const parentRef = useRef(null);
-  // const childRef = useRef(null);
-
-  // useEffect(() => {
-  //   const parent = parentRef.current;
-  //   const child = childRef.current;
-
-  //   if (child.offsetWidth > parent.offsetWidth || child.offsetHeight > parent.offsetHeight) {
-  //     setIsChildLarger(true);
-  //   } else {
-  //     setIsChildLarger(false);
-  //   }
-  // }, []);
+    };
+    getGameList();
+  }, []);
 
   return (
     <div className={cx("wrapper")}>
@@ -75,7 +50,7 @@ function GameRow({ title, type, category }) {
                 <li key={index} className={cx("content-item")}>
                   <GamePreview
                     previewImage={coverImageUrl + game._id}
-                    to={gamePlayUrl + game._id}
+                    to={`/game/${game._id}`}
                   ></GamePreview>
                 </li>
               );

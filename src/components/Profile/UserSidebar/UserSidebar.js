@@ -1,21 +1,42 @@
-import PropTypes from "prop-types";
 import classNames from "classnames/bind";
+import { useContext, useState } from "react";
+import { useCookies } from 'react-cookie';
 import styles from "./UserSidebar.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faUserPen, faUpload, faArrowRightFromBracket, faUsers } from "@fortawesome/free-solid-svg-icons";
 
 import MenuItem from "~/components/MenuItem";
+import { UserContext } from "~/store/userContext";
+import AccountSetting from "../AccountSetting";
 
 const cx = classNames.bind(styles);
 
-function UserSidebar({ role = 'user', toggleUserSidebar }) {
+function UserSidebar({ toggleUserSidebar }) {
+  const [showAccountSetting, setShowAccountSetting] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(['token']);
+  const user = useContext(UserContext);
+
   const handleClickInner = (event) => {
     event.stopPropagation();
   };
 
+  const toggleAccountSetting = () => {
+    setShowAccountSetting(!showAccountSetting);
+  }
+
+  const handleLogout = (event) => {
+    removeCookie('token', { path: '/' });
+    window.location.reload();
+  };
+
   return <div className={cx('overlay')}>
     <div className={cx('container')} onClick={handleClickInner}>
-      <div className={cx('inner')}>
+      {showAccountSetting && <AccountSetting
+        toggleUserSidebar={toggleUserSidebar}
+        toggleAccountSetting={toggleAccountSetting}
+      ></AccountSetting>}
+
+      {!showAccountSetting && <div className={cx('inner')}>
         <div className={cx('header')}>
           <img className={cx('background-image')} src="https://images.crazygames.com/userportal/covers/Space.jpg">
           </img>
@@ -23,14 +44,15 @@ function UserSidebar({ role = 'user', toggleUserSidebar }) {
             <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
           </div>
           <img className={cx('avatar')} src="https://images.crazygames.com/userportal/avatars/9.png"></img>
-          <div className={cx('username')}>dattq0304</div>
-          <div className={cx('email')}>dattq0304@gmail.com</div>
+          <div className={cx('username')}>{user.username}</div>
+          <div className={cx('email')}>{user.email}</div>
         </div>
         <div className={cx('item-list')}>
           <MenuItem
             className={cx('item')}
             leftIcon={<FontAwesomeIcon icon={faUserPen} />}
             small
+            onClick={toggleAccountSetting}
           >
             Account setting
           </MenuItem>
@@ -42,7 +64,7 @@ function UserSidebar({ role = 'user', toggleUserSidebar }) {
           >
             Game upload
           </MenuItem>
-          {role === 'admin' && <MenuItem
+          {user.role === 'admin' && <MenuItem
             className={cx('item')}
             leftIcon={<FontAwesomeIcon icon={faUsers} />}
             small
@@ -53,11 +75,12 @@ function UserSidebar({ role = 'user', toggleUserSidebar }) {
             className={cx('item')}
             leftIcon={<FontAwesomeIcon icon={faArrowRightFromBracket} />}
             small
+            onClick={handleLogout}
           >
             Log out
           </MenuItem>
         </div>
-      </div>
+      </div>}
     </div>
   </div>
 }

@@ -1,0 +1,60 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.inner {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.header {
+  margin: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  color: var(--white);
+  font-size: 3.6rem;
+  font-weight: 800;
+}
+
+.type {
+  margin-left: 20px;
+}
+
+.type-btn {
+  margin: 10px;
+}
+
+.content {
+  background-color: var(--light-background);
+  border-radius: 30px;
+  margin-bottom: 20px;
+}
+
+.table {
+  margin: 0 40px;
+  padding: 0 0 40px 0;
+  width: calc(100% - 80px);
+
+  tr {
+    height: 40px;
+    min-height: 40px;
+  }
+
+  th {
+    text-align: start;
+  }
+}
+
+.action {
+  cursor: pointer;
+}
+
+.action-icon {
+  margin-right: 4px;
+}

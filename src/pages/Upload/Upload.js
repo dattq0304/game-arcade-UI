@@ -1,23 +1,24 @@
 import classNames from "classnames/bind";
 import axios from "axios";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faPenToSquare, faEye, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./Upload.module.scss";
 import Button from "~/components/Button";
+import { UserContext } from "~/store/userContext";
 
 const cx = classNames.bind(styles);
 
 function Upload() {
   const [isGameListLoaded, setIsGameListLoaded] = useState(false);
-  const gameList = useRef([])
+  const gameList = useRef([]);
+  const user = useContext(UserContext);
 
   const getGameList = async () => {
     try {
-      const id = '643ba6009bc9f67e3bef8dc3';
-      const url = `http://localhost:3001/api/game/creator/${id}`;
+      const url = `http://localhost:3001/api/game/creator/${user._id}`;
       const res = await axios.get(url);
       gameList.current = res.data;
       setIsGameListLoaded(true);
@@ -28,8 +29,10 @@ function Upload() {
   };
 
   useEffect(() => {
-    getGameList();
-  }, [])
+    if (user) {
+      getGameList();
+    }
+  }, [user]);
 
   const fomatDate = (dateString) => {
     const date = new Date(dateString);

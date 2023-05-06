@@ -1,5 +1,4 @@
 import classNames from "classnames/bind";
-import PropTypes from "prop-types";
 
 import styles from "./GameInfo.module.scss";
 
@@ -13,13 +12,13 @@ function GameInfo({ name, control, description, className, ...passProps }) {
   return (
     <div className={cx(classes)}>
       <h1 className={cx("game-name")}>{name}</h1>
-      {control === "" && (
+      {control !== "" && (
         <div className={cx("detail")}>
           <h2 className={cx("detail-title")}>Control</h2>
           <p className={cx("detail-content")}>{control}</p>
         </div>
       )}
-      {description === "" && (
+      {description !== "" && (
         <div className={cx("detail")}>
           <h2 className={cx("detail-title")}>Description</h2>
           <p className={cx("detail-content")}>{description}</p>
@@ -28,11 +27,5 @@ function GameInfo({ name, control, description, className, ...passProps }) {
     </div>
   );
 }
-
-GameInfo.propTypes = {
-  name: PropTypes.string,
-  control: PropTypes.string,
-  description: PropTypes.string,
-};
 
 export default GameInfo;

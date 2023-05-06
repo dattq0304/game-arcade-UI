@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import classNames from "classnames/bind";
 import axios from "axios";
@@ -12,6 +12,7 @@ import InputText from "~/components/InputText";
 import InputSelect from "~/components/InputSelect";
 import InputFolder from "~/components/InputFolder";
 import InputImage from "~/components/InputImage";
+import { UserContext } from "~/store/userContext";
 
 const cx = classNames.bind(styles);
 
@@ -26,6 +27,8 @@ function Submit() {
   const [previewImage, setPreviewImage] = useState();
   const [coverImage, setCoverImage] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const user = useContext(UserContext);
 
   const gameId = useRef("");
 
@@ -85,12 +88,17 @@ function Submit() {
   const uploadInfo = async () => {
     try {
       const formData = new FormData();
+      formData.append("creator_id", user._id);
+
       formData.append("name", name);
       formData.append("category", category);
       formData.append("description", description);
       formData.append("control", control);
+
       formData.append("type", type);
-      if (type === "Iframe link") formData.append("link", link);
+      if (type === "Iframe link") {
+        formData.append("link", link);
+      }
 
       if (gameId.current === "") {
         const res = await axios.post(`${uploadUrl}/info`, formData);
