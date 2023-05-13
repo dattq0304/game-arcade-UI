@@ -22,12 +22,12 @@
   font-weight: 800;
 }
 
-.subtitle {
-  color: var(--white);
-  font-size: 2rem;
-  font-weight: 600;
-  height: 100px;
-  margin-left: 40px;
+.type {
+  margin-left: 20px;
+}
+
+.type-btn {
+  margin: 10px;
 }
 
 .content {
@@ -38,7 +38,7 @@
 
 .table {
   margin: 0 40px;
-  padding: 40px 0;
+  padding: 0 0 40px 0;
   width: calc(100% - 80px);
 
   tr {

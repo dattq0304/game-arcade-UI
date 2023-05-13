@@ -8,24 +8,20 @@ import { faPlus, faPenToSquare, faEye, faTrashCan } from "@fortawesome/free-soli
 import styles from "./Upload.module.scss";
 import Button from "~/components/Button";
 import { UserContext } from "~/store/userContext";
+import * as GameServices from "~/api/services/game";
 
 const cx = classNames.bind(styles);
 
 function Upload() {
   const [isGameListLoaded, setIsGameListLoaded] = useState(false);
+  const [tableKey, setTableKey] = useState(0);
   const gameList = useRef([]);
   const user = useContext(UserContext);
 
   const getGameList = async () => {
-    try {
-      const url = `http://localhost:3001/api/game/creator/${user._id}`;
-      const res = await axios.get(url);
-      gameList.current = res.data;
-      setIsGameListLoaded(true);
-      console.log("getGameList - Server:", res);
-    } catch (err) {
-      console.error("getGameList - Client", err);
-    }
+    const res = await GameServices.getGameByCreator(user._id);
+    gameList.current = res;
+    setIsGameListLoaded(true);
   };
 
   useEffect(() => {
@@ -58,7 +54,7 @@ function Upload() {
           <h2 className={cx('subtitle')}>You don't have any game uploaded</h2>
         )}
         {gameList.current.length !== 0 && (
-          <table className={cx('table')}>
+          <table className={cx('table')} key={tableKey}>
             <thead>
               <tr>
                 <th>No</th>
@@ -93,10 +89,20 @@ function Upload() {
                         </Link>
                       </td>
                       <td>
-                        <Link className={cx('action')}>
-                          <FontAwesomeIcon className={cx('action-icon')} icon={faTrashCan}></FontAwesomeIcon>
+                        <div
+                          className={cx('action')}
+                          onClick={() => {
+                            GameServices.deleteGame(game._id);
+                            gameList.current.splice(index, 1);
+                            setTableKey(tableKey + 1);
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            className={cx('action-icon')}
+                            icon={faTrashCan}
+                          ></FontAwesomeIcon>
                           Delete
-                        </Link>
+                        </div>
                       </td>
                     </tr>
                   );

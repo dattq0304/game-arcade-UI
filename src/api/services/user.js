@@ -2,6 +2,42 @@ import axios from "axios";
 
 const baseURL = 'http://localhost:3001/api/user';
 
+const getUser = async (userId) => {
+  try {
+    const res = await axios.get(`${baseURL}?id=${userId}`,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        withCredentials: true
+      }
+    );
+
+    console.log("getUser - Server:", res);
+    return res.data;
+  } catch (err) {
+    console.error("getUser - Client", err);
+  }
+};
+
+const getAllUsers = async () => {
+  try {
+    const res = await axios.get(`${baseURL}/all`,
+      {
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        withCredentials: true
+      }
+    );
+
+    console.log("getAllUsers - Server:", res);
+    return res.data;
+  } catch (err) {
+    console.error("getAllUsers - Client", err);
+  }
+};
+
 const updateUsername = async (userId, newUsername) => {
   try {
     const url = `${baseURL}/update/username?id=${userId}`
@@ -97,4 +133,6 @@ export {
   updateUsername,
   updateEmail,
   updatePassword,
+  getAllUsers,
+  getUser,
 };

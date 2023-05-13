@@ -11,6 +11,7 @@ import Submit from "~/pages/Submit";
 import Edit from "~/pages/Edit";
 import GameDemo from "~/pages/GameDemo";
 import AllGames from "~/pages/AllGames";
+import AllUsers from "~/pages/AllUsers";
 
 // Public routes
 const publicRoutes = [
@@ -21,6 +22,7 @@ const publicRoutes = [
   { path: config.routes.edit, component: Edit, layout: NoSidebar },
   { path: config.routes.demo, component: GameDemo, layout: NoSidebar },
   { path: config.routes.allGames, component: AllGames, layout: NoSidebar },
+  { path: config.routes.allUsers, component: AllUsers, layout: NoSidebar },
 ];
 
 const privateRoutes = [];

@@ -18,10 +18,10 @@ const cx = classNames.bind(styles);
 
 function Submit() {
   const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("hide");
   const [description, setDescription] = useState("");
   const [control, setControl] = useState("");
-  const [type, setType] = useState("");
+  const [type, setType] = useState("hide");
   const [link, setLink] = useState("");
   const [filesUploaded, setFilesUploaded] = useState([]);
   const [previewImage, setPreviewImage] = useState();
@@ -36,7 +36,7 @@ function Submit() {
   const uploadUrl = `${baseUrl}/upload`;
 
   const goToPreviewGameScreen = () => {
-    const newWindow = window.open(`/demo/${gameId.current}`, "_blank");
+    const newWindow = window.open(`/upload/demo/${gameId.current}`, "_blank");
 
     const intervalId = setInterval(() => {
       if (newWindow.closed) {
@@ -189,6 +189,7 @@ function Submit() {
               className={cx("input-field")}
               name="name"
               title="Name"
+              value={name}
               onChange={(e) => setName(e.target.value)}
             ></InputText>
             <InputSelect
@@ -196,18 +197,21 @@ function Submit() {
               name="category"
               title="Category"
               options={categories}
+              value={category}
               onChange={(e) => setCategory(e.target.value)}
             ></InputSelect>
             <InputText
               className={cx("input-field")}
               name="description"
               title="Description"
+              value={description}
               onChange={(e) => setDescription(e.target.value)}
             ></InputText>
             <InputText
               className={cx("input-field")}
               name="control"
               title="Control"
+              value={control}
               onChange={(e) => setControl(e.target.value)}
             ></InputText>
           </div>
@@ -219,7 +223,8 @@ function Submit() {
               name="game-type"
               title="Game type"
               options={gameUploadType}
-              onChange={handleSelectGameUploadType}
+              value={type}
+              onChange={(e) => setType(e.target.value)}
             ></InputSelect>
 
             {type === "HTML5" && (
@@ -237,6 +242,7 @@ function Submit() {
                 className={cx("input-field")}
                 name="iframe-link"
                 title="Link"
+                value={link}
                 onChange={(e) => setLink(e.target.value)}
               ></InputText>
             )}

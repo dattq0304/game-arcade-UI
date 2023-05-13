@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
 import classNames from "classnames/bind";
-import styles from "./GameRow.module.scss";
+import styles from "./GameTable.module.scss";
 import GamePreview from "../GamePreview/GamePreview";
 import * as GameServices from "~/api/services/game";
 
 const cx = classNames.bind(styles);
 
-function GameRow({ title, category, type }) {
+function GameTable({ title, category, type }) {
   const [ready, setReady] = useState(false);
   const gameList = useRef([]);
 
@@ -47,4 +47,4 @@ function GameRow({ title, category, type }) {
   );
 };
 
-export default GameRow;
+export default GameTable;

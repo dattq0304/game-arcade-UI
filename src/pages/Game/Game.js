@@ -53,7 +53,7 @@ function Game() {
         </div>
 
         <div className={cx("recommened")}>
-          <GameColumn title="Recommened" type="random"></GameColumn>
+          <GameColumn title="Random" type="random"></GameColumn>
         </div>
       </div>
     </div>

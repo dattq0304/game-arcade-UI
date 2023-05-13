@@ -130,10 +130,17 @@ function AllGames() {
                         </Link>
                       </td>
                       <td>
-                        <Link className={cx('action')}>
+                        <div
+                          className={cx('action')}
+                          onClick={() => {
+                            GameServices.deleteGame(game._id);
+                            gameList.current.splice(index, 1);
+                            setTableKey(tableKey + 1);
+                          }}
+                        >
                           <FontAwesomeIcon className={cx('action-icon')} icon={faTrashCan}></FontAwesomeIcon>
                           Delete
-                        </Link>
+                        </div>
                       </td>
                     </tr>
                   );

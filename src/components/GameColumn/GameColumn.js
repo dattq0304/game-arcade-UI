@@ -1,9 +1,9 @@
-import { useRef, useState } from "react";
-import axios from "axios";
+import { useRef, useState, useEffect } from "react";
 
 import classNames from "classnames/bind";
 import styles from "./GameColumn.module.scss";
 import GamePreview from "../GamePreview/GamePreview";
+import * as GameServices from "~/api/services/game";
 
 const cx = classNames.bind(styles);
 
@@ -11,29 +11,18 @@ function GameColumn({ title, type, category }) {
   const [ready, setReady] = useState(false);
   const gameList = useRef([]);
 
-  const gamePlayUrl = "http://localhost:3000/game/";
   const coverImageUrl = "http://localhost:3001/api/game/image/";
 
-  const getGameList = async () => {
-    try {
-      let url = "";
-      if (category) {
-        url = `http://localhost:3001/api/game/category/${category}`;
-      } else if (type) {
-        url = `http://localhost:3001/api/game/${type}`;
-      }
-
-      const res = await axios.get(url);
-      gameList.current = res.data;
-      if (res.data.length > 0) {
+  useEffect(() => {
+    const getGameList = async () => {
+      const res = await GameServices.getGameList(category, type);
+      gameList.current = res;
+      if (res.length > 0) {
         setReady(true);
       }
-      console.log("getGameList - Server:", res);
-    } catch (err) {
-      console.error("getGameList - Client", err);
-    }
-  };
-  getGameList();
+    };
+    getGameList();
+  }, []);
 
   return (
     <div className={cx("wrapper")}>
@@ -46,7 +35,7 @@ function GameColumn({ title, type, category }) {
                 <li key={index} className={cx("content-item")}>
                   <GamePreview
                     previewImage={coverImageUrl + game._id}
-                    to={gamePlayUrl + game._id}
+                    to={`/game/${game._id}`}
                   ></GamePreview>
                 </li>
               );

@@ -3,7 +3,7 @@ import { useContext, useState } from "react";
 import { useCookies } from 'react-cookie';
 import styles from "./UserSidebar.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faXmark, faUserPen, faUpload, faArrowRightFromBracket, faUsers } from "@fortawesome/free-solid-svg-icons";
+import { faXmark, faUserPen, faUpload, faArrowRightFromBracket, faUsers, faGamepad } from "@fortawesome/free-solid-svg-icons";
 
 import MenuItem from "~/components/MenuItem";
 import { UserContext } from "~/store/userContext";
@@ -68,9 +68,20 @@ function UserSidebar({ toggleUserSidebar }) {
             className={cx('item')}
             leftIcon={<FontAwesomeIcon icon={faUsers} />}
             small
+            to="/admin/users"
           >
-            Users dashboard
-          </MenuItem>}
+            Users manage
+          </MenuItem>
+          }
+          {user.role === 'admin' && <MenuItem
+            className={cx('item')}
+            leftIcon={<FontAwesomeIcon icon={faGamepad} />}
+            small
+            to="/admin/games"
+          >
+            Games manage
+          </MenuItem>
+          }
           <MenuItem
             className={cx('item')}
             leftIcon={<FontAwesomeIcon icon={faArrowRightFromBracket} />}
