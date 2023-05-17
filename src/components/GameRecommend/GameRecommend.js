@@ -1,13 +1,13 @@
 import { useRef, useState, useEffect } from "react";
 
 import classNames from "classnames/bind";
-import styles from "./GameColumn.module.scss";
+import styles from "./GameRecommend.module.scss";
 import GamePreview from "../GamePreview/GamePreview";
 import * as GameServices from "~/api/services/game";
 
 const cx = classNames.bind(styles);
 
-function GameColumn({ title, type, category }) {
+function GameRecommend({ title, type, size = 10 }) {
   const [ready, setReady] = useState(false);
   const gameList = useRef([]);
 
@@ -15,7 +15,7 @@ function GameColumn({ title, type, category }) {
 
   useEffect(() => {
     const getGameList = async () => {
-      const res = await GameServices.getGameList(category, type);
+      const res = await GameServices.getGameByType(type, size);
       gameList.current = res;
       if (res.length > 0) {
         setReady(true);
@@ -47,4 +47,4 @@ function GameColumn({ title, type, category }) {
   );
 };
 
-export default GameColumn;
+export default GameRecommend;

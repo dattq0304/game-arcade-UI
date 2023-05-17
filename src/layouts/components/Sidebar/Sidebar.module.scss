@@ -20,3 +20,9 @@
 .wide {
   width: var(--wide-sidebar-width);
 }
+
+.spread {
+  width: 100%;
+  height: 1px;
+  background-color: var(--border-color);
+}

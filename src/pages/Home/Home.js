@@ -1,14 +1,72 @@
 import classNames from "classnames/bind";
+import { useLocation } from 'react-router-dom';
+import { useEffect, useState } from "react";
 
 import styles from "./Home.module.scss";
 import GameRow from "~/components/GameRow";
+import GamePreview from "~/components/GamePreview";
+import * as GameServices from "~/api/services/game"
 
 const cx = classNames.bind(styles);
 
 function Home() {
+  const location = useLocation();
+  const [home, setHome] = useState(true);
+  const [gameList, setGameList] = useState([]);
+
+  const coverImageUrl = "http://localhost:3001/api/game/image/";
+
+  useEffect(() => {
+    const getGameByType = (type) => {
+      GameServices.getGameByType(type, 100)
+        .then(res => {
+          setGameList(res);
+          console.log(res);
+        })
+        .catch(err => console.error(err));
+    };
+
+    const getGameByCategory = (category) => {
+      GameServices.getGameByCategory(category, 100)
+        .then(res => {
+          setGameList(res);
+          console.log(res);
+        })
+        .catch(err => console.error(err));
+    };
+
+    const getGameByName = (name) => {
+      console.log(name);
+      GameServices.getGameByName(name, 100)
+        .then(res => {
+          setGameList(res);
+          console.log(res);
+        })
+        .catch(err => console.error(err));
+    }
+
+    const query = location.search;
+    if (query.length === 0 || query === "?type=Home") {
+      setHome(true);
+    } else if (query.split('=')[0] === "?type") {
+      const type = query.split("=")[1];
+      getGameByType(type);
+      setHome(false);
+    } else if (query.split('=')[0] === "?category") {
+      const category = query.split("=")[1];
+      getGameByCategory(category);
+      setHome(false);
+    } else if (query.split('=')[0] === "?search") {
+      const name = query.split("=")[1];
+      console.log("search =", name);
+      getGameByName(name);
+      setHome(false);
+    }
+  }, [location]);
+
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("inner")}>
+      {home && <div className={cx("home")}>
         <GameRow title="New game" type="new"></GameRow>
         <GameRow title="Random" type="random"></GameRow>
         <GameRow title="Action" category="Action"></GameRow>
@@ -24,7 +82,23 @@ function Home() {
         <GameRow title="2 players" category="2 players"></GameRow>
         <GameRow title="Minecraft" category="Minecraft"></GameRow>
         <GameRow title="Other" category="Other"></GameRow>
-      </div>
+      </div>}
+      {!home && <div className={cx('other')}>
+        {gameList.map((game, index) => {
+          return (
+            <div key={index} className={cx("content-item")}>
+              <GamePreview
+                previewImage={coverImageUrl + game._id}
+                to={`/game/${game._id}`}
+              ></GamePreview>
+            </div>
+          );
+        })}
+        {
+          gameList.length === 0 &&
+          <div className={cx("message")}>Not available</div>
+        }
+      </div>}
     </div>
   );
 };

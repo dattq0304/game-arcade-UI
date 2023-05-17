@@ -5,7 +5,7 @@ import classNames from "classnames/bind";
 
 import styles from "./Game.module.scss";
 import GamePlay from "~/components/GamePlay";
-import GameColumn from "~/components/GameColumn";
+import GameRecommend from "~/components/GameRecommend";
 import GameInfo from "~/components/GameInfo";
 
 const cx = classNames.bind(styles);
@@ -31,8 +31,6 @@ function Game() {
       } else {
         setPath(res.data.path);
       }
-
-      console.log("getGame - Server:", res);
     } catch (err) {
       console.error("getGame - Client", err);
     }
@@ -53,7 +51,7 @@ function Game() {
         </div>
 
         <div className={cx("recommened")}>
-          <GameColumn title="Random" type="random"></GameColumn>
+          <GameRecommend title="Games Recommend" type="Random" size={20}></GameRecommend>
         </div>
       </div>
     </div>

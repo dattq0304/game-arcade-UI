@@ -15,7 +15,12 @@ function GameRow({ title, category, type }) {
 
   useEffect(() => {
     const getGameList = async () => {
-      const res = await GameServices.getGameList(category, type);
+      let res;
+      if (category) {
+        res = await GameServices.getGameByCategory(category);
+      } else if (type) {
+        res = await GameServices.getGameByType(type);
+      }
       gameList.current = res;
       if (res.length > 0) {
         setReady(true);

@@ -32,9 +32,9 @@ const cx = classNames.bind(styles);
 function Sidebar(props) {
   const { classes, setIsSidebarOpen } = props;
 
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState("Home");
 
-  const menuList = [
+  const menuType = [
     {
       leftIcon: faHouse,
       title: "Home",
@@ -47,10 +47,13 @@ function Sidebar(props) {
       leftIcon: faShuffle,
       title: "Random",
     },
-    {
-      leftIcon: faArrowTrendUp,
-      title: "Trending",
-    },
+    // {
+    //   leftIcon: faArrowTrendUp,
+    //   title: "Trending",
+    // },
+  ];
+
+  const menuCategory = [
     {
       leftIcon: faFreeCodeCamp,
       title: "Action",
@@ -112,14 +115,30 @@ function Sidebar(props) {
       onMouseLeave={() => setIsSidebarOpen(false)}
     >
       <div className={cx("list")}>
-        {menuList.map(function (element, index) {
+        {menuType.map(function (element, index) {
           return (
             <MenuItem
               className={cx("item")}
               key={index}
               leftIcon={<FontAwesomeIcon icon={element.leftIcon} />}
-              onClick={() => setActive(index)}
-              active={active === index}
+              onClick={() => setActive(element.title)}
+              active={active === element.title}
+              to={`/?type=${element.title}`}
+            >
+              {element.title}
+            </MenuItem>
+          );
+        })}
+        <div className={cx('spread')}></div>
+        {menuCategory.map(function (element, index) {
+          return (
+            <MenuItem
+              className={cx("item")}
+              key={index}
+              leftIcon={<FontAwesomeIcon icon={element.leftIcon} />}
+              onClick={() => setActive(element.title)}
+              active={active === element.title}
+              to={`/?category=${element.title}`}
             >
               {element.title}
             </MenuItem>

@@ -1,4 +1,23 @@
 .wrapper {
   width: 100%;
-  margin-bottom: 100px;
+  min-height: calc(100vh - var(--footer-height) - var(--header-height));
+}
+
+.other {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-left: 5px;
+  // justify-content: center;
+}
+
+.content-item {
+  margin: 5px;
+}
+
+.message {
+  width: 100%;
+  margin-top: 20px;
+  text-align: center;
+  font-size: 2rem;
 }

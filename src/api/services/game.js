@@ -5,23 +5,40 @@ import axios from "axios";
 
 const baseURL = 'http://localhost:3001/api/game';
 
-const getGameList = async (category = '', type = '', size = 10) => {
+// const getGameList = async (category = '', type = '', size = 10) => {
+//   try {
+//     console.log(category, type, 'size', size)
+//     let url = "";
+//     if (category.length > 0) {
+//       url = `${baseURL}/category/${category}?size=${size}`;
+//     } else if (type) {
+//       url = `${baseURL}/${type}?size=${size}`;
+//     }
+
+//     const res = await axios.get(url);
+//     return res.data;
+//   } catch (err) {
+//     console.error("getGameList - Client", err);
+//   }
+// };
+
+const getGameByType = async (type = '', size = 10) => {
   try {
-    console.log(category, type, 'size', size)
-    let url = "";
-    if (category.length > 0) {
-      url = `${baseURL}/category/${category}?size=${size}`;
-    } else if (type) {
-      url = `${baseURL}/${type}?size=${size}`;
-    }
-
+    const url = `${baseURL}/${type}?size=${size}`;
     const res = await axios.get(url);
-
-    console.log("getGameList - Server:", res);
-
     return res.data;
   } catch (err) {
-    console.error("getGameList - Client", err);
+    console.error("getGameByType", err);
+  }
+};
+
+const getGameByCategory = async (category = '', size = 10) => {
+  try {
+    const url = `${baseURL}/category/${category}?size=${size}`;
+    const res = await axios.get(url);
+    return res.data;
+  } catch (err) {
+    console.error("getGameByType", err);
   }
 };
 
@@ -90,10 +107,21 @@ const deleteGame = async (gameId) => {
   }
 }
 
+const getGameByName = async (name, size = 10) => {
+  try {
+    const res = await axios.get(`${baseURL}/search?q=${name}&size=${size}`);
+    return res.data;
+  } catch (err) {
+    console.error("searchGameByName - Client", err);
+  }
+};
+
 export {
-  getGameList,
+  getGameByType,
+  getGameByCategory,
   getAllGames,
   setGameState,
   getGameByCreator,
   deleteGame,
+  getGameByName,
 };
