@@ -12,6 +12,7 @@ import Edit from "~/pages/Edit";
 import GameDemo from "~/pages/GameDemo";
 import AllGames from "~/pages/AllGames";
 import AllUsers from "~/pages/AllUsers";
+import NotFound from "~/pages/NotFound";
 
 // Public routes
 const publicRoutes = [
@@ -23,6 +24,7 @@ const publicRoutes = [
   { path: config.routes.demo, component: GameDemo, layout: NoSidebar },
   { path: config.routes.allGames, component: AllGames, layout: NoSidebar },
   { path: config.routes.allUsers, component: AllUsers, layout: NoSidebar },
+  { path: config.routes.notFound, component: NotFound, layout: NoSidebar }
 ];
 
 const privateRoutes = [];

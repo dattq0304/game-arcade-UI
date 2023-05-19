@@ -1,0 +1,9 @@
+.wrapper {
+  width: 100%;
+  height: calc(100vh - var(--header-height) - var(--footer-height));
+}
+
+.title {
+  text-align: center;
+  margin-top: 20px;
+}

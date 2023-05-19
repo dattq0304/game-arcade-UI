@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import classNames from "classnames/bind";
+import { FacebookShareButton, FacebookIcon, TwitterShareButton, TwitterIcon } from 'react-share';
 
 import styles from "./Game.module.scss";
 import GamePlay from "~/components/GamePlay";
@@ -37,11 +38,27 @@ function Game() {
   };
   getGame();
 
+  const appId = process.env.REACT_APP_FACBOOK_APP_ID;
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("inner")}>
         <div className={cx("main-content")}>
           <GamePlay src={path}></GamePlay>
+          <FacebookShareButton
+            url={window.location.href}
+            quote={'Dummy text!'}
+            hashtag="#game_arcade"
+          >
+            <FacebookIcon size={32} round />
+          </FacebookShareButton>
+          <TwitterShareButton
+            url={window.location.href}
+            quote={'Dummy text!'}
+            hashtag="#game_arcade"
+          >
+            <TwitterIcon size={32} round />
+          </TwitterShareButton>
           <GameInfo
             name={name}
             control={control}

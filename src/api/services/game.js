@@ -3,7 +3,8 @@ import axios from "axios";
 
 // import { UserContext } from "~/store/userContext";
 
-const baseURL = 'http://localhost:3001/api/game';
+// const baseURL = 'http://localhost:3001/api/game';
+const baseURL = `${process.env.REACT_APP_API_URL}/game`;
 
 // const getGameList = async (category = '', type = '', size = 10) => {
 //   try {
