@@ -1,3 +1,47 @@
+.wrapper {
+  background-color: var(--header-background-color);
+  margin-top: 20px;
+  padding: 0 40px 40px;
+  border-radius: 10px;
+}
+
 .detail {
   margin-top: 20px;
+}
+
+.creator-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.creator {
+  font-size: 1.8rem;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  span {
+    margin-left: 10px;
+  }
+}
+
+.creator-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+}
+
+.share {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.share-item {
+  margin: 5px;
 }

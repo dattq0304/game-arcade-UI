@@ -12,23 +12,22 @@ import Search from "../Search";
 import FormSignIn from "~/components/FormSignIn";
 import Profile from "~/components/Profile";
 import { UserContext } from "~/store/userContext";
+import SavedGames from "~/components/SavedGames";
 
 const cx = classNames.bind(styles);
 
 function Header() {
-  // const [showAction, setShowAction] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
+  const [showSavedGames, setShowSavedGames] = useState(false);
   const user = useContext(UserContext);
 
   const handleClickSignIn = () => {
     setShowSignIn(!showSignIn);
   };
 
-  // useEffect(() => {
-  //   if (user) {
-  //     // setShowSignIn()
-  //   }
-  // }, [user]);
+  const toggleSavedGame = () => {
+    setShowSavedGames(!showSavedGames);
+  };
 
   return (
     <header className={cx("wrapper")}>
@@ -45,7 +44,11 @@ function Header() {
         <Search />
 
         <div className={cx("actions")}>
-          <Button leftIcon={<FontAwesomeIcon icon={faHeart} />} text>
+          <Button
+            leftIcon={<FontAwesomeIcon icon={faHeart} />}
+            text
+            onClick={toggleSavedGame}
+          >
             My games
           </Button>
           {user && <Profile></Profile>}
@@ -59,6 +62,7 @@ function Header() {
           {showSignIn && (
             <FormSignIn handleClickSignIn={handleClickSignIn}></FormSignIn>
           )}
+          {showSavedGames && <SavedGames toggleSavedGame={toggleSavedGame}></SavedGames>}
         </div>
       </div>
     </header>

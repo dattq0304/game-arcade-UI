@@ -11,7 +11,7 @@ function GameRecommend({ title, type, size = 10 }) {
   const [ready, setReady] = useState(false);
   const gameList = useRef([]);
 
-  const coverImageUrl = "http://localhost:3001/api/game/image/";
+  const coverImageUrl = `${process.env.REACT_APP_API_URL}/game/image/`;
 
   useEffect(() => {
     const getGameList = async () => {
@@ -36,6 +36,7 @@ function GameRecommend({ title, type, size = 10 }) {
                   <GamePreview
                     previewImage={coverImageUrl + game._id}
                     to={`/game/${game._id}`}
+                    name={game.name}
                   ></GamePreview>
                 </li>
               );

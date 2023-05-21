@@ -1,13 +1,13 @@
 import { useParams } from "react-router-dom";
-import { useState } from "react";
-import axios from "axios";
+import { Fragment, useEffect, useState } from "react";
 import classNames from "classnames/bind";
-import { FacebookShareButton, FacebookIcon, TwitterShareButton, TwitterIcon } from 'react-share';
 
 import styles from "./Game.module.scss";
 import GamePlay from "~/components/GamePlay";
 import GameRecommend from "~/components/GameRecommend";
 import GameInfo from "~/components/GameInfo";
+import * as GameServices from "~/api/services/game";
+import { useLocation } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
@@ -17,61 +17,60 @@ function Game() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [control, setControl] = useState("");
+  const [authorId, setAuthorId] = useState("");
+  const [gameId, setGameId] = useState("");
+  const [ready, setReady] = useState(false);
+  const location = useLocation();
+  const coverImageUrl = `${process.env.REACT_APP_API_URL}/game/image`;
 
-  const getGame = async () => {
-    try {
-      const url = `http://localhost:3001/api/game/${id}`;
-      const res = await axios.get(url);
-
-      setName(res.data.name);
-      setDescription(res.data.description);
-      setControl(res.data.control);
-
-      if (res.data.type === "HTML5") {
-        setPath(`${url}/index.html`);
-      } else {
-        setPath(res.data.path);
+  useEffect(() => {
+    const getGame = async () => {
+      try {
+        GameServices.getGameById(id)
+          .then(res => {
+            setName(res.name);
+            setDescription(res.description);
+            setControl(res.control);
+            setGameId(res._id);
+            setAuthorId(res.creator_id);
+            if (res.type === "HTML5") {
+              setPath(`${process.env.REACT_APP_API_URL}/game/${id}/index.html`);
+            } else {
+              setPath(res.path);
+            }
+            setReady(true);
+          })
       }
-    } catch (err) {
-      console.error("getGame - Client", err);
-    }
-  };
-  getGame();
-
-  const appId = process.env.REACT_APP_FACBOOK_APP_ID;
+      catch (err) {
+        console.error("getGame - Client", err);
+      }
+    };
+    getGame();
+  }, [location]);
 
   return (
-    <div className={cx("wrapper")}>
-      <div className={cx("inner")}>
-        <div className={cx("main-content")}>
-          <GamePlay src={path}></GamePlay>
-          <FacebookShareButton
-            url={window.location.href}
-            quote={'Dummy text!'}
-            hashtag="#game_arcade"
-          >
-            <FacebookIcon size={32} round />
-          </FacebookShareButton>
-          <TwitterShareButton
-            url={window.location.href}
-            quote={'Dummy text!'}
-            hashtag="#game_arcade"
-          >
-            <TwitterIcon size={32} round />
-          </TwitterShareButton>
-          <GameInfo
-            name={name}
-            control={control}
-            description={description}
-            className={cx("detail")}
-          ></GameInfo>
-        </div>
+    <Fragment>
+      {gameId && <div className={cx("wrapper")} style={{ backgroundImage: `url('${coverImageUrl + "/" + gameId}')` }}>
+        <div className={cx("overlay")} >
+          <div className={cx("inner")} key={gameId}>
+            {ready && <div className={cx("main-content")}>
+              <GamePlay src={path} gameId={gameId}></GamePlay>
+              <GameInfo
+                name={name}
+                control={control}
+                description={description}
+                className={cx("detail")}
+                authorId={authorId}
+              ></GameInfo>
+            </div>}
 
-        <div className={cx("recommened")}>
-          <GameRecommend title="Games Recommend" type="Random" size={20}></GameRecommend>
+            <div className={cx("recommened")}>
+              <GameRecommend title="Games Recommend" type="Random" size={20}></GameRecommend>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      </div>}
+    </Fragment>
   );
 }
 

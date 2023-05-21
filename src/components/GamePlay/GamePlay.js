@@ -1,15 +1,36 @@
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExpand } from "@fortawesome/free-solid-svg-icons";
-import React, { useRef, useEffect } from "react";
-import PropTypes from "prop-types";
+import {
+  faExpand,
+  faThumbsDown as faThumbsDownSolid,
+  faThumbsUp as faThumbsUpSolid,
+  faBookmark as faBookmarkSolid
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  faThumbsDown as faThumbsDownRegular,
+  faThumbsUp as faThumbsUpRegular,
+  faBookmark as faBookmarkRegular
+} from "@fortawesome/free-regular-svg-icons";
+import React, { useRef, useEffect, useState, useContext } from "react";
 
 import styles from "./GamePlay.module.scss";
+import * as ReviewServices from "../../api/services/review";
+import { UserContext } from "~/store/userContext";
 
 const cx = classNames.bind(styles);
 
-function GamePlay({ title, src, className, ...passProps }) {
+function GamePlay({ title, src, gameId, className, ...passProps }) {
   const playgroundRef = useRef(null);
+  const [liked, setLiked] = useState(0);
+  const [save, setSave] = useState(false);
+  const [like, setLike] = useState(0);
+  const [dislike, setDisike] = useState(0);
+  const [ready, setReady] = useState(false);
+  const user = useContext(UserContext);
+
+  const classes = cx("wrapper", {
+    [className]: className,
+  });
 
   const togglePlaygroundExpand = () => {
     if (!document.fullscreenElement) {
@@ -21,6 +42,70 @@ function GamePlay({ title, src, className, ...passProps }) {
     } else {
       document.exitFullscreen();
     }
+  };
+
+  const handleLikeClick = () => {
+    if (!user) {
+      alert('Login is require for this feature');
+      return;
+    }
+    if (liked === 1) {
+      ReviewServices.unLikeGame(gameId);
+      setLike(like - 1);
+      setLiked(0);
+    } else {
+      ReviewServices.likeGame(gameId);
+      if (liked === -1) {
+        setDisike(dislike - 1);
+      }
+      setLike(like + 1);
+      setLiked(1);
+    }
+  };
+
+  const handleDislikeClick = () => {
+    if (!user) {
+      alert('Login is require for this feature');
+      return;
+    }
+    if (liked === -1) {
+      ReviewServices.unLikeGame(gameId);
+      setDisike(dislike - 1);
+      setLiked(0);
+    } else {
+      ReviewServices.dislikeGame(gameId);
+      if (liked === 1) {
+        setLike(like - 1);
+      }
+      setDisike(dislike + 1);
+      setLiked(-1);
+    }
+  };
+
+
+
+  const handleSaveClick = () => {
+    const savedGamesJSON = localStorage.getItem('savedGames');
+    if (!save) {
+      if (savedGamesJSON) {
+        const savedGames = JSON.parse(savedGamesJSON);
+        savedGames.push(gameId);
+        localStorage.setItem('savedGames', JSON.stringify(savedGames));
+      } else {
+        const savedGames = [gameId];
+        localStorage.setItem('savedGames', JSON.stringify(savedGames));
+      }
+    } else {
+      if (savedGamesJSON) {
+        const savedGames = JSON.parse(savedGamesJSON);
+        const index = savedGames.indexOf(gameId);
+        if (index !== -1) {
+          savedGames.splice(index, 1);
+        }
+        localStorage.setItem('savedGames', JSON.stringify(savedGames));
+      }
+    }
+    setSave(!save);
   };
 
   useEffect(() => {
@@ -37,9 +122,46 @@ function GamePlay({ title, src, className, ...passProps }) {
     };
   }, [playgroundRef]);
 
-  const classes = cx("wrapper", {
-    [className]: className,
-  });
+  useEffect(() => {
+    const getSaveGames = () => {
+      const savedGamesJSON = localStorage.getItem('savedGames');
+      if (savedGamesJSON) {
+        const savedGames = JSON.parse(savedGamesJSON);
+        if (savedGames.indexOf(gameId) !== -1) {
+          setSave(true);
+        }
+      }
+    }
+    getSaveGames();
+
+    const getReviews = () => {
+      if (user) {
+        setReady(true);
+      }
+      ReviewServices.getReviews(gameId)
+        .then(review => {
+          let numberOfLike = 0;
+          let numberOfDislike = 0;
+          review.forEach((data) => {
+            if (data.like === true) {
+              numberOfLike++;
+              if (user && data.user_id === user._id) {
+                setLiked(1);
+              }
+            }
+            if (data.like === false) {
+              numberOfDislike++;
+              if (user && data.user_id === user._id) {
+                setLiked(-1);
+              }
+            }
+          })
+          setLike(numberOfLike);
+          setDisike(numberOfDislike);
+        })
+    };
+    getReviews();
+  }, [user]);
 
   return (
     <div className={cx(classes)} {...passProps} ref={playgroundRef}>
@@ -53,7 +175,18 @@ function GamePlay({ title, src, className, ...passProps }) {
         loading="eager"
         data-hj-allow-iframe="true"
       ></iframe>
-      <div className={cx("game-actions")}>
+      <div className={cx("game-actions")} key={ready}>
+        <div className={cx("action")}>
+          <span>{like > 0 ? like : ''}</span>
+          <FontAwesomeIcon icon={liked !== 1 ? faThumbsUpRegular : faThumbsUpSolid} onClick={handleLikeClick}></FontAwesomeIcon>
+        </div>
+        <div className={cx("action")}>
+          <span>{dislike > 0 ? dislike : ''}</span>
+          <FontAwesomeIcon icon={liked !== -1 ? faThumbsDownRegular : faThumbsDownSolid} onClick={handleDislikeClick}></FontAwesomeIcon>
+        </div>
+        <div className={cx("action")}>
+          <FontAwesomeIcon icon={save ? faBookmarkSolid : faBookmarkRegular} onClick={handleSaveClick}></FontAwesomeIcon>
+        </div>
         <div className={cx("action")} onClick={togglePlaygroundExpand}>
           <FontAwesomeIcon icon={faExpand}></FontAwesomeIcon>
         </div>
@@ -61,11 +194,5 @@ function GamePlay({ title, src, className, ...passProps }) {
     </div>
   );
 }
-
-GamePlay.propTypes = {
-  title: PropTypes.string,
-  src: PropTypes.string,
-  className: PropTypes.string,
-};
 
 export default GamePlay;

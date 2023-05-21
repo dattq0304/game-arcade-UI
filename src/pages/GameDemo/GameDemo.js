@@ -1,36 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import classNames from "classnames/bind";
-import axios from "axios";
 
 import styles from "./GameDemo.module.scss";
 import Button from "~/components/Button/Button";
 import GamePlay from "~/components/GamePlay";
+import * as GameServices from "~/api/services/game";
 
 const cx = classNames.bind(styles);
 
 function Upload() {
   const [gamePath, setGamePath] = useState("");
   const [name, setName] = useState("Review");
-  const { id } = useParams();
+  const { id: gameId } = useParams();
 
-  const goToPreviewGameScreen = async () => {
-    try {
-      const url = `http://localhost:3001/api/game/${id}`;
-      const res = await axios.get(url);
-      setName(res.data.name);
-      if (res.data.type === "HTML5") {
-        setGamePath(`${url}/index.html`);
-      } else {
-        setGamePath(res.data.path);
-      }
-
-      console.log("goToPreviewGameScreen - Server:", res);
-    } catch (err) {
-      console.error("goToPreviewGameScreen - Client", err);
-    }
-  };
-  goToPreviewGameScreen();
+  useEffect(() => {
+    GameServices.getGameById(gameId).
+      then((res) => {
+        setGamePath(res.path);
+        setName(res.name);
+      });
+  }, []);
 
   const handleGobackClick = (e) => {
     window.close();
@@ -45,7 +35,7 @@ function Upload() {
           <Button className={cx("btn")} text border onClick={handleGobackClick}>
             Go Back
           </Button>
-          <Button className={cx("btn")} primary to={"http://localhost:3000/"}>
+          <Button className={cx("btn")} primary to={"/"}>
             Finish review
           </Button>
         </div>

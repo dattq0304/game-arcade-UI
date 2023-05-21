@@ -1,28 +1,29 @@
 import axios from "axios";
 
-const baseURL = `${process.env.REACT_APP_API_URL}/user`;
+const userApi = `${process.env.REACT_APP_API_URL}/user`;
 
-const getUser = async (userId) => {
+const getUser = async (id) => {
   try {
-    const res = await axios.get(`${baseURL}?id=${userId}`,
-      {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        withCredentials: true
-      }
-    );
-
-    console.log("getUser - Server:", res);
+    const res = await axios.get(`${userApi}/?id=${id}`);
+    res.data.profile_image = `${userApi}/image/${res.data.profile_image}`;
     return res.data;
   } catch (err) {
-    console.error("getUser - Client", err);
+    return null;
+  }
+}
+
+const getUserProfileImage = async (userId) => {
+  try {
+    const res = await axios.get(`${userApi}/image?id=${userId}`);
+    return res.data;
+  } catch (err) {
+    console.error("getUserProfileImage - Client", err);
   }
 };
 
 const getAllUsers = async () => {
   try {
-    const res = await axios.get(`${baseURL}/all`,
+    const res = await axios.get(`${userApi}/all`,
       {
         headers: {
           'Content-Type': 'application/json'
@@ -31,7 +32,6 @@ const getAllUsers = async () => {
       }
     );
 
-    console.log("getAllUsers - Server:", res);
     return res.data;
   } catch (err) {
     console.error("getAllUsers - Client", err);
@@ -40,7 +40,7 @@ const getAllUsers = async () => {
 
 const updateUsername = async (userId, newUsername) => {
   try {
-    const url = `${baseURL}/update/username?id=${userId}`
+    const url = `${userApi}/update/username?id=${userId}`
 
     const formData = new FormData();
     formData.append("newUsername", newUsername);
@@ -54,7 +54,6 @@ const updateUsername = async (userId, newUsername) => {
       }
     );
 
-    console.log("updateUsername - Server:", res);
     return {
       ok: true,
       message: res.data,
@@ -70,7 +69,7 @@ const updateUsername = async (userId, newUsername) => {
 
 const updateEmail = async (userId, newEmail) => {
   try {
-    const url = `${baseURL}/update/email?id=${userId}`
+    const url = `${userApi}/update/email?id=${userId}`
 
     const formData = new FormData();
     formData.append("newEmail", newEmail);
@@ -84,7 +83,6 @@ const updateEmail = async (userId, newEmail) => {
       }
     );
 
-    console.log("updateEmail - Server:", res);
     return {
       ok: true,
       message: res.data,
@@ -100,7 +98,7 @@ const updateEmail = async (userId, newEmail) => {
 
 const updatePassword = async (userId, password, newPassword) => {
   try {
-    const url = `${baseURL}/update/password?id=${userId}`
+    const url = `${userApi}/update/password?id=${userId}`
 
     const formData = new FormData();
     formData.append("password", password);
@@ -115,7 +113,6 @@ const updatePassword = async (userId, password, newPassword) => {
       }
     );
 
-    console.log("updatePassword - Server:", res);
     return {
       ok: true,
       message: res.data,
@@ -129,10 +126,83 @@ const updatePassword = async (userId, password, newPassword) => {
   }
 };
 
+const changeUserProfileImage = async (userId, i) => {
+  try {
+    const formData = new FormData();
+    formData.append("profile_image", i);
+    const urlencoded = new URLSearchParams(formData).toString();
+    const url = `${userApi}/image/${userId}`;
+    const res = await axios.put(url, urlencoded,
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        withCredentials: true
+      }
+    );
+
+    return {
+      ok: true,
+      message: res.data,
+    };
+  } catch (err) {
+
+  }
+};
+
+const signIn = async ({ username, password }) => {
+  try {
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("password", password);
+    const urlencoded = new URLSearchParams(formData).toString();
+    const res = await axios.post(
+      `${userApi}/login`,
+      urlencoded,
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    alert("Username or password incorrect!");
+    console.error("signIn - Client", err);
+  }
+};
+
+const signUp = async ({ username, password, email }) => {
+  try {
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("password", password);
+    formData.append("email", email);
+    const urlencoded = new URLSearchParams(formData).toString();
+    const res = await axios.post(
+      `${userApi}/register`,
+      urlencoded,
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    return res.data;
+  } catch (err) {
+    alert("Username or email already exited!");
+    console.error("signIn - Client", err);
+  }
+};
+
 export {
   updateUsername,
   updateEmail,
   updatePassword,
   getAllUsers,
   getUser,
+  getUserProfileImage,
+  changeUserProfileImage,
+  signIn,
+  signUp
 };

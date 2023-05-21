@@ -3,6 +3,7 @@ import { Cookies } from 'react-cookie';
 import axios from 'axios';
 
 const UserContext = createContext(null);
+const userApi = process.env.REACT_APP_API_URL + '/user';
 
 function UserProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -12,7 +13,7 @@ function UserProvider({ children }) {
   useEffect(() => {
     const getUserId = async () => {
       try {
-        const res = await axios.get('http://localhost:3001/api/user/auth', {
+        const res = await axios.get(`${userApi}/auth`, {
           headers: {
             'Content-Type': 'application/json'
           },
@@ -21,7 +22,7 @@ function UserProvider({ children }) {
         if (res.status === 200) {
           return res.data;
         }
-        console.log('getUserId', res);
+
       } catch (err) {
         console.error('getUserId', err);
         return null;
@@ -30,7 +31,9 @@ function UserProvider({ children }) {
 
     const getUser = async (id) => {
       try {
-        const res = await axios.get(`http://localhost:3001/api/user/?id=${id}`);
+        const res = await axios.get(`${userApi}/?id=${id}`);
+        res.data.profile_image = `${userApi}/image/${res.data.profile_image}`;
+        console.log(res.data);
         return res.data;
       } catch (err) {
         return null;
@@ -43,7 +46,6 @@ function UserProvider({ children }) {
         if (userId) {
           const user = await getUser(userId);
           setUser(user);
-          console.log(user);
         }
       }
     }

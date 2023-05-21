@@ -1,5 +1,4 @@
 import classNames from "classnames/bind";
-import axios from "axios";
 import { useState, useEffect, useRef, useContext } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

@@ -1,10 +1,10 @@
 import { useState, useRef, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import classNames from "classnames/bind";
-import axios from "axios";
 import jszip from "jszip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
+import * as UploadServices from "~/api/services/upload";
 
 import styles from "./Submit.module.scss";
 import Button from "~/components/Button/Button";
@@ -27,13 +27,8 @@ function Submit() {
   const [previewImage, setPreviewImage] = useState();
   const [coverImage, setCoverImage] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
-
   const user = useContext(UserContext);
-
   const gameId = useRef("");
-
-  const baseUrl = "http://localhost:3001/api";
-  const uploadUrl = `${baseUrl}/upload`;
 
   const goToPreviewGameScreen = () => {
     const newWindow = window.open(`/upload/demo/${gameId.current}`, "_blank");
@@ -86,81 +81,52 @@ function Submit() {
   };
 
   const uploadInfo = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("creator_id", user._id);
-
-      formData.append("name", name);
-      formData.append("category", category);
-      formData.append("description", description);
-      formData.append("control", control);
-
-      formData.append("type", type);
-      if (type === "Iframe link") {
-        formData.append("link", link);
-      }
-
-      if (gameId.current === "") {
-        const res = await axios.post(`${uploadUrl}/info`, formData);
-        gameId.current = res.data._id;
-        console.log("uploadInfo - Server:", res);
-      } else {
-        const urlencoded = new URLSearchParams(formData).toString();
-        const res = await axios.put(
-          `http://localhost:3001/api/game/${gameId.current}`,
-          urlencoded,
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-          }
-        );
-
-        console.log("updateInfo - Server:", res);
-      }
-    } catch (err) {
-      console.error("upload/Update Info - Client", err);
+    if (gameId.current === "") {
+      const res = await UploadServices.uploadInfo({
+        userId: user._id,
+        name: name,
+        category: category,
+        description: description,
+        control: control,
+        type: type,
+        link: link,
+      });
+      gameId.current = res._id;
+    } else {
+      await UploadServices.updateInfo({
+        userId: user._id,
+        name: name,
+        category: category,
+        description: description,
+        control: control,
+        type: type,
+        link: link,
+        gameId: gameId.current
+      });
     }
   };
 
   const uploadSourceCode = async () => {
-    try {
-      const zip = new jszip();
-      await Promise.all(
-        filesUploaded.map(async (file) => {
-          const data = await file.arrayBuffer();
-          zip.file(file.webkitRelativePath, data);
-        })
-      );
-      const zipData = await zip.generateAsync({ type: "arraybuffer" });
-      const zipFile = new File([zipData], "upload.zip");
-      const formData = new FormData();
-      formData.append("source-code", zipFile);
-
-      const res = await axios.post(
-        `${uploadUrl}/source-code/${gameId.current}`,
-        formData
-      );
-
-      console.log("uploadSourceCode - Server:", res);
-    } catch (err) {
-      console.error("uploadSourceCode - Client", err);
-    }
+    const zip = new jszip();
+    await Promise.all(
+      filesUploaded.map(async (file) => {
+        const data = await file.arrayBuffer();
+        zip.file(file.webkitRelativePath, data);
+      })
+    );
+    const zipData = await zip.generateAsync({ type: "arraybuffer" });
+    const zipFile = new File([zipData], "upload.zip");
+    UploadServices.uploadSourceCode({
+      zipFile: zipFile,
+      gameId: gameId.current
+    });
   };
 
   const uploadCoverImage = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("cover-image", coverImage);
-
-      const res = await axios.post(
-        `${uploadUrl}/cover-image/${gameId.current}`,
-        formData
-      );
-      console.log("uploadCoverImage - Server:", res);
-    } catch (err) {
-      console.error("uploadCoverImage - Client", err);
-    }
+    await UploadServices.uploadCoverImage({
+      coverImage: coverImage,
+      gameId: gameId.current
+    });
   };
 
   const handleGobackClick = (e) => {

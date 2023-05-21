@@ -49,7 +49,7 @@ function Sidebar(props) {
     },
     // {
     //   leftIcon: faArrowTrendUp,
-    //   title: "Trending",
+    //   title: "Top rating",
     // },
   ];
 

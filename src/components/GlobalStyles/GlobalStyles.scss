@@ -9,6 +9,7 @@
   --text-color-light: #e5e6ee;
   --text-color-dark: #636476;
   --border-color: #2a2a31;
+  --header-background-color: rgba(33, 34, 51, 0.9);
 
   --font-family: "ProximaNova", sans-serif;
 
@@ -30,6 +31,10 @@
 
 html {
   font-size: 62.5%;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
 }
 
 body {

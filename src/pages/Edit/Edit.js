@@ -1,8 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import classNames from "classnames/bind";
-import axios from "axios";
 import jszip from "jszip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
@@ -13,10 +12,14 @@ import InputText from "~/components/InputText";
 import InputSelect from "~/components/InputSelect";
 import InputFolder from "~/components/InputFolder";
 import InputImage from "~/components/InputImage";
+import * as GameServices from "~/api/services/game";
+import * as UploadServices from "~/api/services/upload";
+import { UserContext } from "~/store/userContext";
 
 const cx = classNames.bind(styles);
 
 function Edit() {
+  const user = useContext(UserContext);
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
@@ -26,21 +29,13 @@ function Edit() {
   const [filesUploaded, setFilesUploaded] = useState([]);
   const [previewImage, setPreviewImage] = useState();
   const [coverImage, setCoverImage] = useState(null);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const { id } = useParams();
+  const { id: gameId } = useParams();
+  console.log(gameId);
+  const coverImageUrl = `${process.env.REACT_APP_API_URL}/game/image`;
 
-  const gameId = useRef("");
-
-  const baseUrl = "http://localhost:3001/api";
-  const uploadUrl = `${baseUrl}/upload`;
-  const coverImageUrl = "http://localhost:3001/api/game/image";
-
-  const getGameInfo = async () => {
-    try {
-      const url = `${baseUrl}/game/${id}`;
-      const res = await axios.get(url);
-      const game = res.data;
-      gameId.current = game._id;
+  useEffect(() => {
+    const getGameInfo = async () => {
+      const game = await GameServices.getGameById(gameId);
       setName(game.name);
       setCategory(game.category);
       setControl(game.control);
@@ -49,28 +44,20 @@ function Edit() {
       if (game.type === 'Iframe link') {
         setLink(game.path);
       }
-      setPreviewImage(`${coverImageUrl}/${gameId.current}`);
-
-      console.log("getGameInfo - Server:", res);
+      setPreviewImage(`${coverImageUrl}/${gameId}`);
     }
-    catch (err) {
-      console.error("getGameInfo - Client", err);
-    }
-  }
-
-  useEffect(() => {
-    if (id) {
+    if (gameId) {
       getGameInfo();
     }
   }, []);
 
   const goToPreviewGameScreen = () => {
-    const newWindow = window.open(`/demo/${gameId.current}`, "_blank");
+    const newWindow = window.open(`/upload/demo/${gameId}`, "_blank");
 
     const intervalId = setInterval(() => {
       if (newWindow.closed) {
         clearInterval(intervalId);
-        return <Navigate to={`/edit/${gameId.current}`} />;
+        return <Navigate to={`/edit/${gameId}`} />;
       }
     }, 1000);
   };
@@ -100,87 +87,50 @@ function Edit() {
 
   const handleSubmitForm = async (e) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    await uploadInfo();
+    await updateInfo();
     if (type === "HTML5") {
-      await uploadSourceCode();
+      await updateSourceCode();
     }
-    await uploadCoverImage();
+    await updateCoverImage();
     goToPreviewGameScreen();
-    console.log("id", gameId.current);
+    console.log("id", gameId);
   };
 
-  const uploadInfo = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("category", category);
-      formData.append("description", description);
-      formData.append("control", control);
-      formData.append("type", type);
-      if (type === "Iframe link") formData.append("link", link);
-
-      if (gameId.current === "") {
-        const res = await axios.post(`${uploadUrl}/info`, formData);
-        gameId.current = res.data._id;
-        console.log("uploadInfo - Server:", res);
-      } else {
-        const urlencoded = new URLSearchParams(formData).toString();
-        const res = await axios.put(
-          `http://localhost:3001/api/game/${gameId.current}`,
-          urlencoded,
-          {
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-          }
-        );
-
-        console.log("updateInfo - Server:", res);
-      }
-    } catch (err) {
-      console.error("upload/Update Info - Client", err);
-    }
+  const updateInfo = async () => {
+    await UploadServices.updateInfo({
+      userId: user._id,
+      name: name,
+      category: category,
+      description: description,
+      control: control,
+      type: type,
+      link: link,
+      gameId: gameId
+    });
   };
 
-  const uploadSourceCode = async () => {
-    try {
-      const zip = new jszip();
-      await Promise.all(
-        filesUploaded.map(async (file) => {
-          const data = await file.arrayBuffer();
-          zip.file(file.webkitRelativePath, data);
-        })
-      );
-      const zipData = await zip.generateAsync({ type: "arraybuffer" });
-      const zipFile = new File([zipData], "upload.zip");
-      const formData = new FormData();
-      formData.append("source-code", zipFile);
-
-      const res = await axios.post(
-        `${uploadUrl}/source-code/${gameId.current}`,
-        formData
-      );
-
-      console.log("uploadSourceCode - Server:", res);
-    } catch (err) {
-      console.error("uploadSourceCode - Client", err);
-    }
+  const updateSourceCode = async () => {
+    const zip = new jszip();
+    await Promise.all(
+      filesUploaded.map(async (file) => {
+        const data = await file.arrayBuffer();
+        zip.file(file.webkitRelativePath, data);
+      })
+    );
+    const zipData = await zip.generateAsync({ type: "arraybuffer" });
+    const zipFile = new File([zipData], "upload.zip");
+    UploadServices.uploadSourceCode({
+      zipFile: zipFile,
+      gameId: gameId
+    });
   };
 
-  const uploadCoverImage = async () => {
-    try {
-      const formData = new FormData();
-      formData.append("cover-image", coverImage);
 
-      const res = await axios.post(
-        `${uploadUrl}/cover-image/${gameId.current}`,
-        formData
-      );
-      console.log("uploadCoverImage - Server:", res);
-    } catch (err) {
-      console.error("uploadCoverImage - Client", err);
-    }
+  const updateCoverImage = async () => {
+    await UploadServices.uploadCoverImage({
+      coverImage: coverImage,
+      gameId: gameId
+    });
   };
 
   const handleGobackClick = (e) => {
@@ -278,7 +228,7 @@ function Edit() {
           <div className={cx("details")}>
             <div className={cx("submit-wrapper")}>
               <Button primary type="submit" onClick={handleSubmitForm}>
-                {isSubmitted ? "Update" : "Upload"}
+                Update
               </Button>
             </div>
           </div>

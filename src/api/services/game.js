@@ -3,25 +3,18 @@ import axios from "axios";
 
 // import { UserContext } from "~/store/userContext";
 
-// const baseURL = 'http://localhost:3001/api/game';
 const baseURL = `${process.env.REACT_APP_API_URL}/game`;
 
-// const getGameList = async (category = '', type = '', size = 10) => {
-//   try {
-//     console.log(category, type, 'size', size)
-//     let url = "";
-//     if (category.length > 0) {
-//       url = `${baseURL}/category/${category}?size=${size}`;
-//     } else if (type) {
-//       url = `${baseURL}/${type}?size=${size}`;
-//     }
-
-//     const res = await axios.get(url);
-//     return res.data;
-//   } catch (err) {
-//     console.error("getGameList - Client", err);
-//   }
-// };
+const getGameById = async (id) => {
+  try {
+    const url = `${baseURL}/${id}`;
+    const res = await axios.get(url);
+    return res.data;
+  }
+  catch (err) {
+    console.log('getGameById', err);
+  }
+}
 
 const getGameByType = async (type = '', size = 10) => {
   try {
@@ -118,6 +111,7 @@ const getGameByName = async (name, size = 10) => {
 };
 
 export {
+  getGameById,
   getGameByType,
   getGameByCategory,
   getAllGames,

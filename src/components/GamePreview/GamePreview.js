@@ -1,5 +1,4 @@
 import classNames from "classnames/bind";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 import styles from "./GamePreview.module.scss";
@@ -9,6 +8,7 @@ const cx = classNames.bind(styles);
 function GamePreview({
   to,
   previewImage,
+  name,
   className,
   hot = false,
   recent = false,
@@ -33,19 +33,14 @@ function GamePreview({
         <div
           className={cx("game-image")}
           style={{ backgroundImage: `url('${previewImage}')` }}
-        ></div>
+        >
+          <div className={cx("game-name")}>
+            <span>{name}</span>
+          </div>
+        </div>
       </Link>
     </div>
   );
 }
-
-GamePreview.prototype = {
-  to: PropTypes.string,
-  previewImage: PropTypes.string,
-  className: PropTypes.string,
-  hot: PropTypes.bool,
-  recent: PropTypes.bool,
-  toprated: PropTypes.bool,
-};
 
 export default GamePreview;

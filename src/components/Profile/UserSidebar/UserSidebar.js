@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 import styles from "./UserSidebar.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,6 +13,7 @@ import AccountSetting from "../AccountSetting";
 const cx = classNames.bind(styles);
 
 function UserSidebar({ toggleUserSidebar }) {
+  const navigate = useNavigate();
   const [showAccountSetting, setShowAccountSetting] = useState(false);
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
   const user = useContext(UserContext);
@@ -26,6 +28,7 @@ function UserSidebar({ toggleUserSidebar }) {
 
   const handleLogout = (event) => {
     removeCookie('token', { path: '/' });
+    navigate('/');
     window.location.reload();
   };
 
@@ -43,7 +46,7 @@ function UserSidebar({ toggleUserSidebar }) {
           <div className={cx('close-btn')} onClick={toggleUserSidebar}>
             <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
           </div>
-          <img className={cx('avatar')} src="https://images.crazygames.com/userportal/avatars/9.png"></img>
+          <img className={cx('avatar')} src={user.profile_image}></img>
           <div className={cx('username')}>{user.username}</div>
           <div className={cx('email')}>{user.email}</div>
         </div>

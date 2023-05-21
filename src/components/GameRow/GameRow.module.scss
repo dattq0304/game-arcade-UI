@@ -4,11 +4,25 @@
   overflow: hidden;
 }
 
-.title {
-  font-size: 1.6rem;
-  font-weight: 700;
+.header {
   margin-left: 14px;
   margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.view-more {
+  margin-left: 20px;
+  margin-bottom: 3px;
+  color: #9783eb;
+  font-size: 1.4rem;
+  cursor: pointer;
 }
 
 .content {

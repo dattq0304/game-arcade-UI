@@ -13,8 +13,7 @@ function Home() {
   const location = useLocation();
   const [home, setHome] = useState(true);
   const [gameList, setGameList] = useState([]);
-
-  const coverImageUrl = "http://localhost:3001/api/game/image/";
+  const coverImageUrl = `${process.env.REACT_APP_API_URL}/game/image/`;
 
   useEffect(() => {
     const getGameByType = (type) => {
@@ -89,6 +88,7 @@ function Home() {
             <div key={index} className={cx("content-item")}>
               <GamePreview
                 previewImage={coverImageUrl + game._id}
+                name={game.name}
                 to={`/game/${game._id}`}
               ></GamePreview>
             </div>

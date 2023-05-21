@@ -4,6 +4,7 @@ import classNames from "classnames/bind";
 import styles from "./GameRow.module.scss";
 import GamePreview from "../GamePreview/GamePreview";
 import * as GameServices from "~/api/services/game";
+import { Link } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
@@ -11,7 +12,7 @@ function GameRow({ title, category, type }) {
   const [ready, setReady] = useState(false);
   const gameList = useRef([]);
 
-  const coverImageUrl = "http://localhost:3001/api/game/image/";
+  const coverImageUrl = `${process.env.REACT_APP_API_URL}/game/image/`;
 
   useEffect(() => {
     const getGameList = async () => {
@@ -33,7 +34,10 @@ function GameRow({ title, category, type }) {
     <div className={cx("wrapper")}>
       {ready && (
         <div className={cx("inner")}>
-          <label className={cx("title")}>{title}</label>
+          <div className={cx("header")}>
+            <label className={cx("title")}>{title}</label>
+            <Link className={cx("view-more")} to={category ? `/?category=${category}` : `/?type=${type}`}>view more</Link>
+          </div>
           <ul className={cx("content")}>
             {gameList.current.map((game, index) => {
               return (
@@ -41,6 +45,7 @@ function GameRow({ title, category, type }) {
                   <GamePreview
                     previewImage={coverImageUrl + game._id}
                     to={`/game/${game._id}`}
+                    name={game.name}
                   ></GamePreview>
                 </li>
               );
