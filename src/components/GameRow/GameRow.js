@@ -36,7 +36,7 @@ function GameRow({ title, category, type }) {
         <div className={cx("inner")}>
           <div className={cx("header")}>
             <label className={cx("title")}>{title}</label>
-            <Link className={cx("view-more")} to={category ? `/?category=${category}` : `/?type=${type}`}>view more</Link>
+            <Link className={cx("view-more")} to={category ? `/?category=${title}` : `/?type=${type}`}>view more</Link>
           </div>
           <ul className={cx("content")}>
             {gameList.current.map((game, index) => {

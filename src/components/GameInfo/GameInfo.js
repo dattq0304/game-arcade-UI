@@ -8,8 +8,8 @@ import {
   TelegramIcon,
   RedditShareButton,
   RedditIcon,
-  WeiboShareButton,
-  WeiboIcon
+  LinkedinShareButton,
+  LinkedinIcon,
 } from 'react-share';
 import { useState, useEffect } from "react";
 
@@ -18,14 +18,24 @@ import * as UserServices from "../../api/services/user";
 
 const cx = classNames.bind(styles);
 
-function GameInfo({ name, authorId, control, description, className, ...passProps }) {
+function GameInfo({ name, authorId, control, category, description, className, date, ...passProps }) {
   const [author, setAuthor] = useState({ profile_image: "", username: "" });
+  const [formattedDate, setFormattedDate] = useState("");
 
   const classes = cx("wrapper", {
     [className]: className,
   });
 
   useEffect(() => {
+    const convertDate = (date) => {
+      const newDate = new Date(date);
+      const month = newDate.getMonth() + 1;
+      const day = newDate.getDate();
+      const year = newDate.getFullYear();
+      setFormattedDate(`${month}/${day}/${year}`);
+    };
+    convertDate(date);
+
     const getAuthor = () => {
       UserServices.getUser(authorId)
         .then(author => {
@@ -51,7 +61,7 @@ function GameInfo({ name, authorId, control, description, className, ...passProp
           <FacebookShareButton
             className={cx('share-item')}
             url={window.location.href}
-            quote={'Dummy text!'}
+            quote={"Play with me"}
             hashtag="#game_arcade"
           >
             <FacebookIcon size={32} round />
@@ -59,46 +69,47 @@ function GameInfo({ name, authorId, control, description, className, ...passProp
           <TwitterShareButton
             className={cx('share-item')}
             url={window.location.href}
-            quote={'Dummy text!'}
-            hashtag="#game_arcade"
+            title={"Play with me"}
+            hashtags={["game_arcade", "project_2"]}
           >
             <TwitterIcon size={32} round />
           </TwitterShareButton>
           <TelegramShareButton
             className={cx('share-item')}
             url={window.location.href}
-            quote={'Dummy text!'}
-            hashtag="#game_arcade"
+            title={"Play with me"}
           >
             <TelegramIcon size={32} round />
           </TelegramShareButton>
           <RedditShareButton
             className={cx('share-item')}
             url={window.location.href}
-            quote={'Dummy text!'}
-            hashtag="#game_arcade"
+            title={"Play with me"}
           >
             <RedditIcon size={32} round />
           </RedditShareButton>
-          <WeiboShareButton
+          <LinkedinShareButton
             className={cx('share-item')}
             url={window.location.href}
-            quote={'Dummy text!'}
-            hashtag="#game_arcade"
+            title={"Play with me"}
+            hashtags={["game_arcade", "project_2"]}
           >
-            <WeiboIcon size={32} round />
-          </WeiboShareButton>
+            <LinkedinIcon size={32} round />
+          </LinkedinShareButton>
         </div>
       </div>
+      {formattedDate.length !== 0 && <span>Publish at: {formattedDate}</span>}
+      <br />
+      <span>Category: {category}</span>
       {control !== "" && (
         <div className={cx("detail")}>
-          <h2 className={cx("detail-title")}>Control</h2>
+          <h3 className={cx("detail-title")}>Control</h3>
           <p className={cx("detail-content")}>{control}</p>
         </div>
       )}
       {description !== "" && (
         <div className={cx("detail")}>
-          <h2 className={cx("detail-title")}>Description</h2>
+          <h3 className={cx("detail-title")}>Description</h3>
           <p className={cx("detail-content")}>{description}</p>
         </div>
       )}

@@ -3,7 +3,6 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClock,
-  faStar,
   faFutbolBall,
 } from "@fortawesome/free-regular-svg-icons";
 import {
@@ -38,19 +37,23 @@ function Sidebar(props) {
     {
       leftIcon: faHouse,
       title: "Home",
+      type: "Home"
     },
     {
       leftIcon: faClock,
       title: "New",
+      type: "new"
     },
     {
       leftIcon: faShuffle,
       title: "Random",
+      type: "random"
     },
-    // {
-    //   leftIcon: faArrowTrendUp,
-    //   title: "Top rating",
-    // },
+    {
+      leftIcon: faArrowTrendUp,
+      title: "Top rated",
+      type: "topRated"
+    },
   ];
 
   const menuCategory = [
@@ -123,7 +126,7 @@ function Sidebar(props) {
               leftIcon={<FontAwesomeIcon icon={element.leftIcon} />}
               onClick={() => setActive(element.title)}
               active={active === element.title}
-              to={`/?type=${element.title}`}
+              to={`/?type=${element.type}`}
             >
               {element.title}
             </MenuItem>

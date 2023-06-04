@@ -5,11 +5,8 @@
   border-radius: 10px;
 }
 
-.detail {
-  margin-top: 20px;
-}
-
 .creator-container {
+  margin-top: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -44,4 +41,8 @@
 
 .share-item {
   margin: 5px;
+}
+
+.detail {
+  margin-top: 10px;
 }

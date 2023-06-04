@@ -17,8 +17,10 @@ function Game() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [control, setControl] = useState("");
+  const [date, setDate] = useState("");
   const [authorId, setAuthorId] = useState("");
   const [gameId, setGameId] = useState("");
+  const [category, setCategory] = useState("");
   const [ready, setReady] = useState(false);
   const location = useLocation();
   const coverImageUrl = `${process.env.REACT_APP_API_URL}/game/image`;
@@ -32,7 +34,9 @@ function Game() {
             setDescription(res.description);
             setControl(res.control);
             setGameId(res._id);
+            setCategory(res.category);
             setAuthorId(res.creator_id);
+            setDate(res.modified_date);
             if (res.type === "HTML5") {
               setPath(`${process.env.REACT_APP_API_URL}/game/${id}/index.html`);
             } else {
@@ -58,9 +62,11 @@ function Game() {
               <GameInfo
                 name={name}
                 control={control}
+                date={date}
                 description={description}
                 className={cx("detail")}
                 authorId={authorId}
+                category={category}
               ></GameInfo>
             </div>}
 

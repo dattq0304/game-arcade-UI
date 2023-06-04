@@ -5,9 +5,15 @@
 
 .other {
   display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  margin-left: 10px;
+}
+
+.content {
+  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-left: 5px;
   // justify-content: center;
 }
 
@@ -20,4 +26,8 @@
   margin-top: 20px;
   text-align: center;
   font-size: 2rem;
+}
+
+.title {
+  margin-left: 5px;
 }

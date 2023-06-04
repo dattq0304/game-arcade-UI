@@ -13,6 +13,7 @@ function Home() {
   const location = useLocation();
   const [home, setHome] = useState(true);
   const [gameList, setGameList] = useState([]);
+  const [title, setTitle] = useState();
   const coverImageUrl = `${process.env.REACT_APP_API_URL}/game/image/`;
 
   useEffect(() => {
@@ -49,16 +50,26 @@ function Home() {
       setHome(true);
     } else if (query.split('=')[0] === "?type") {
       const type = query.split("=")[1];
+      // if (type === "Top%20rated") {
+      //   getGameByType("topRated");
+      // } else if (type === "New") {
+      //   getGameByType("new");
+      // } else if (type === "Random") {
+      //   getGameByType("random");
+      // }
       getGameByType(type);
+      setTitle(decodeURIComponent(type));
       setHome(false);
     } else if (query.split('=')[0] === "?category") {
       const category = query.split("=")[1];
       getGameByCategory(category);
+      setTitle(decodeURIComponent(category));
       setHome(false);
     } else if (query.split('=')[0] === "?search") {
       const name = query.split("=")[1];
       console.log("search =", name);
       getGameByName(name);
+      setTitle("Search results for: " + decodeURIComponent(name));
       setHome(false);
     }
   }, [location]);
@@ -66,8 +77,9 @@ function Home() {
   return (
     <div className={cx("wrapper")}>
       {home && <div className={cx("home")}>
-        <GameRow title="New game" type="new"></GameRow>
+        <GameRow title="New" type="new"></GameRow>
         <GameRow title="Random" type="random"></GameRow>
+        <GameRow title="Top Rated" type="topRated"></GameRow>
         <GameRow title="Action" category="Action"></GameRow>
         <GameRow title="Sport" category="Sport"></GameRow>
         <GameRow title="Quiz" category="Quiz"></GameRow>
@@ -83,17 +95,20 @@ function Home() {
         <GameRow title="Other" category="Other"></GameRow>
       </div>}
       {!home && <div className={cx('other')}>
-        {gameList.map((game, index) => {
-          return (
-            <div key={index} className={cx("content-item")}>
-              <GamePreview
-                previewImage={coverImageUrl + game._id}
-                name={game.name}
-                to={`/game/${game._id}`}
-              ></GamePreview>
-            </div>
-          );
-        })}
+        <h2 className={cx("title")}>{title}</h2>
+        <div className={cx("content")}>
+          {gameList.map((game, index) => {
+            return (
+              <div key={index} className={cx("content-item")}>
+                <GamePreview
+                  previewImage={coverImageUrl + game._id}
+                  name={game.name}
+                  to={`/game/${game._id}`}
+                ></GamePreview>
+              </div>
+            );
+          })}
+        </div>
         {
           gameList.length === 0 &&
           <div className={cx("message")}>Not available</div>
