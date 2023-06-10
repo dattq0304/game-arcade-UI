@@ -50,13 +50,6 @@ function Home() {
       setHome(true);
     } else if (query.split('=')[0] === "?type") {
       const type = query.split("=")[1];
-      // if (type === "Top%20rated") {
-      //   getGameByType("topRated");
-      // } else if (type === "New") {
-      //   getGameByType("new");
-      // } else if (type === "Random") {
-      //   getGameByType("random");
-      // }
       getGameByType(type);
       setTitle(decodeURIComponent(type));
       setHome(false);

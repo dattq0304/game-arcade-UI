@@ -1,5 +1,6 @@
 import classNames from "classnames/bind";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClock,
@@ -30,8 +31,23 @@ const cx = classNames.bind(styles);
 
 function Sidebar(props) {
   const { classes, setIsSidebarOpen } = props;
-
   const [active, setActive] = useState("Home");
+  const location = useLocation();
+
+  useEffect(() => {
+    const query = location.search;
+    if (query.length === 0 || query === "?type=Home") {
+      setActive("Home");
+    } else if (query.split('=')[0] === "?type") {
+      const type = query.split("=")[1];
+      setActive(decodeURIComponent(type));
+    } else if (query.split('=')[0] === "?category") {
+      const category = query.split("=")[1];
+      setActive(decodeURIComponent(category));
+    } else if (query.split('=')[0] === "?search") {
+      setActive("Home");
+    }
+  }, [location]);
 
   const menuType = [
     {
@@ -125,7 +141,7 @@ function Sidebar(props) {
               key={index}
               leftIcon={<FontAwesomeIcon icon={element.leftIcon} />}
               onClick={() => setActive(element.title)}
-              active={active === element.title}
+              active={active === element.type}
               to={`/?type=${element.type}`}
             >
               {element.title}

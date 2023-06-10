@@ -1,13 +1,14 @@
 import { useParams } from "react-router-dom";
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import classNames from "classnames/bind";
+import { useLocation } from "react-router-dom";
 
 import styles from "./Game.module.scss";
 import GamePlay from "~/components/GamePlay";
 import GameRecommend from "~/components/GameRecommend";
 import GameInfo from "~/components/GameInfo";
 import * as GameServices from "~/api/services/game";
-import { useLocation } from "react-router-dom";
+import Comment from "~/components/Comment";
 
 const cx = classNames.bind(styles);
 
@@ -53,7 +54,7 @@ function Game() {
   }, [location]);
 
   return (
-    <Fragment>
+    <>
       {gameId && <div className={cx("wrapper")} style={{ backgroundImage: `url('${coverImageUrl + "/" + gameId}')` }}>
         <div className={cx("overlay")} >
           <div className={cx("inner")} key={gameId}>
@@ -68,15 +69,16 @@ function Game() {
                 authorId={authorId}
                 category={category}
               ></GameInfo>
+              <Comment gameId={gameId} />
             </div>}
 
             <div className={cx("recommened")}>
-              <GameRecommend title="Games Recommend" type="Random" size={20}></GameRecommend>
+              <GameRecommend title="Games Recommend" type="Random" size={24}></GameRecommend>
             </div>
           </div>
         </div>
       </div>}
-    </Fragment>
+    </>
   );
 }
 

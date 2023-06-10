@@ -1,7 +1,7 @@
 import { useState, useRef, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import classNames from "classnames/bind";
-import jszip from "jszip";
+import jszip, { file } from "jszip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import * as UploadServices from "~/api/services/upload";
@@ -70,6 +70,30 @@ function Submit() {
 
   const handleSubmitForm = async (e) => {
     e.preventDefault();
+    if (name.trim().length === 0) {
+      alert("Please enter the game name");
+      return;
+    }
+    if (categories === "hide") {
+      alert("Please select the game category");
+      return;
+    }
+    if (type === "hide") {
+      alert("Please select the game type");
+      return;
+    }
+    if (type === "Iframe link" && link.trim().length === 0) {
+      alert("Please enter the game link");
+      return;
+    }
+    if (type === "HTML5" && filesUploaded.length === 0) {
+      alert("Please upload the game files");
+      return;
+    }
+    if (!coverImage) {
+      alert("Please upload the game cover image");
+      return;
+    }
     setIsSubmitted(true);
     await uploadInfo();
     if (type === "HTML5") {
