@@ -53,34 +53,30 @@ function Footer() {
           </Button>
         </div>
         <div className={cx("contact")}>
-          <a
-            href="http://localhost:3000/"
-            target="blank"
-            className={cx("contact-item")}
+          <Button
+            text
+            to="/about"
           >
             About
-          </a>
-          <a
-            href="http://localhost:3000/"
-            target="blank"
-            className={cx("contact-item")}
+          </Button>
+          <Button
+            text
+            to="/contact"
           >
             Contact
-          </a>
-          <a
-            href="http://localhost:3000/"
-            target="blank"
-            className={cx("contact-item")}
+          </Button>
+          <Button
+            text
+            to="/privacy"
           >
             Privacy
-          </a>
-          <a
-            href="http://localhost:3000/"
-            target="blank"
-            className={cx("contact-item")}
+          </Button>
+          <Button
+            text
+            to="/terms"
           >
             Terms & Conditions
-          </a>
+          </Button>
         </div>
       </div>
     </footer>

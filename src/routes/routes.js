@@ -12,6 +12,10 @@ import Edit from "~/pages/Edit";
 import GameDemo from "~/pages/GameDemo";
 import AllGames from "~/pages/AllGames";
 import AllUsers from "~/pages/AllUsers";
+import About from "~/pages/About/About";
+import Contact from "~/pages/Contact/Contact";
+import Privacy from "~/pages/Privacy/Privacy";
+import Terms from "~/pages/Terms/Terms";
 import NotFound from "~/pages/NotFound";
 
 // Public routes
@@ -24,6 +28,10 @@ const publicRoutes = [
   { path: config.routes.demo, component: GameDemo, layout: NoSidebar },
   { path: config.routes.allGames, component: AllGames, layout: NoSidebar },
   { path: config.routes.allUsers, component: AllUsers, layout: NoSidebar },
+  { path: config.routes.about, component: About, layout: NoSidebar },
+  { path: config.routes.contact, component: Contact, layout: NoSidebar },
+  { path: config.routes.privacy, component: Privacy, layout: NoSidebar },
+  { path: config.routes.terms, component: Terms, layout: NoSidebar },
   { path: config.routes.notFound, component: NotFound, layout: NoSidebar }
 ];
 

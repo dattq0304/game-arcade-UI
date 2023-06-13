@@ -1,0 +1,23 @@
+.wrapper {
+  width: 100%;
+  min-height: calc(100vh - var(--footer-height) - var(--header-height));
+  display: flex;
+  justify-content: center;
+}
+
+.inner {
+  width: 80%;
+  max-width: 900px;
+  background-color: var(--light-background);
+  padding: 40px 60px;
+}
+
+.content {
+  margin-bottom: 20px;
+  margin-left: 40px;
+}
+
+p {
+  margin: 10px 0;
+  text-align: justify;
+}

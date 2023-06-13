@@ -1,5 +1,9 @@
 const routes = {
   home: "/",
+  about: "/about",
+  contact: "/contact",
+  privacy: "/privacy",
+  terms: "/terms",
   game: "/game/:id",
   upload: "/upload",
   submit: "/upload/submit",
