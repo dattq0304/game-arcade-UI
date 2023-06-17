@@ -51,7 +51,14 @@ function Home() {
     } else if (query.split('=')[0] === "?type") {
       const type = query.split("=")[1];
       getGameByType(type);
-      setTitle(decodeURIComponent(type));
+      const decodeType = decodeURIComponent(type);
+      if (decodeType === "new") {
+        setTitle("New");
+      } else if (decodeType === "random") {
+        setTitle("Random");
+      } else if (decodeType === "topRated") {
+        setTitle("Top rated");
+      }
       setHome(false);
     } else if (query.split('=')[0] === "?category") {
       const category = query.split("=")[1];

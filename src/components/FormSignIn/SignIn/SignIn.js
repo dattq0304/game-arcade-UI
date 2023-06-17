@@ -18,6 +18,17 @@ function SignIn({ handleClickCloseBtn, setActionToSignUp }) {
 
   const handleSignIn = async (event) => {
     event.preventDefault();
+
+    if (username.trim() === "") {
+      alert("Please enter an username!");
+      return;
+    }
+
+    if (password.trim() === "") {
+      alert("Please enter a password!");
+      return;
+    }
+
     const res = await UserServices.signIn({ username: username, password: password });
     setCookie('token', res.token, { path: '/' });
     window.location.reload();

@@ -21,7 +21,7 @@ function Search() {
   useEffect(() => {
     const query = location.search;
     if (query.split('=')[0] === "?search") {
-      setInputValue(query.split('=')[1]);
+      setInputValue(decodeURIComponent(query.split('=')[1]));
     }
     else {
       setInputValue('');

@@ -12,19 +12,26 @@ import {
   LinkedinIcon,
 } from 'react-share';
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 import styles from "./GameInfo.module.scss";
 import * as UserServices from "../../api/services/user";
+import DeveloperGames from "../DeveloperGames/DeveloperGames";
 
 const cx = classNames.bind(styles);
 
 function GameInfo({ name, authorId, control, category, description, className, date, ...passProps }) {
   const [author, setAuthor] = useState({ profile_image: "", username: "" });
   const [formattedDate, setFormattedDate] = useState("");
+  const [showDeveloperGames, setShowDeveloperGames] = useState(false);
 
   const classes = cx("wrapper", {
     [className]: className,
   });
+
+  const toogleShowDeveloperGames = () => {
+    setShowDeveloperGames(!showDeveloperGames);
+  }
 
   useEffect(() => {
     const convertDate = (date) => {
@@ -51,10 +58,13 @@ function GameInfo({ name, authorId, control, category, description, className, d
   return (
     <div className={cx(classes)}>
       <h2 className={cx("game-name")}>{name}</h2>
-      <div className={cx('creator-container')}>
+      <div className={cx('creator-container')} onClick={toogleShowDeveloperGames}>
         <div className={cx("creator")}>
           <img className={cx("creator-image")} src={author.profile_image}></img>
           <span>{author.username}</span>
+          {showDeveloperGames && (
+            <DeveloperGames toogleShowDeveloperGames={toogleShowDeveloperGames} authorId={authorId} authorName={author.username}></DeveloperGames>
+          )}
         </div>
         <div className={cx('share')}>
           <span className={cx('share-item')}>Share: </span>
@@ -100,7 +110,7 @@ function GameInfo({ name, authorId, control, category, description, className, d
       </div>
       {formattedDate.length !== 0 && <span>Publish at: {formattedDate}</span>}
       <br />
-      <span>Category: {category}</span>
+      <span>Category: <Link className={cx("category-link")} to={`/?category=${category}`}>{category}</Link></span>
       {control !== "" && (
         <div className={cx("detail")}>
           <h3 className={cx("detail-title")}>Control</h3>

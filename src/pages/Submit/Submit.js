@@ -64,10 +64,6 @@ function Submit() {
 
   const gameUploadType = ["HTML5", "Iframe link"];
 
-  const handleSelectGameUploadType = (e) => {
-    setType(e.target.value);
-  };
-
   const handleSubmitForm = async (e) => {
     e.preventDefault();
     if (name.trim().length === 0) {

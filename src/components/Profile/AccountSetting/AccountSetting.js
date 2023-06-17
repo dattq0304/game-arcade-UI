@@ -22,6 +22,7 @@ function AccountSetting({ toggleUserSidebar, toggleAccountSetting }) {
   const [email, setEmail] = useState(user.email);
   const [password, setPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const profileImages = useRef([]);
   const [profileImage, setProfileImage] = useState(user.profile_image);
 
@@ -44,6 +45,10 @@ function AccountSetting({ toggleUserSidebar, toggleAccountSetting }) {
   };
 
   const submitUsername = async () => {
+    if (username.trim() === "") {
+      alert("Please enter a username");
+      return;
+    }
     const res = await UserServices.updateUsername(user._id, username);
     alert(res.message);
     if (res.ok) {
@@ -53,6 +58,10 @@ function AccountSetting({ toggleUserSidebar, toggleAccountSetting }) {
   };
 
   const submitEmail = async () => {
+    if (email.trim() === "") {
+      alert("Please enter a email");
+      return;
+    }
     const res = await UserServices.updateEmail(user._id, email);
     alert(res.message);
     if (res.ok) {
@@ -62,6 +71,18 @@ function AccountSetting({ toggleUserSidebar, toggleAccountSetting }) {
   };
 
   const submitPassword = async () => {
+    if (password.trim() === "") {
+      alert("Please enter the password");
+      return;
+    }
+    if (newPassword.trim() === "") {
+      alert("Please enter new password");
+      return;
+    }
+    if (newPassword !== confirmNewPassword) {
+      alert("Please confirm your password");
+      return;
+    }
     const res = await UserServices.updatePassword(user._id, password, newPassword);
     alert(res.message);
     if (res.ok) {
@@ -161,6 +182,13 @@ function AccountSetting({ toggleUserSidebar, toggleAccountSetting }) {
               title="New password"
               value={newPassword}
               onChange={(e) => { setNewPassword(e.target.value) }}
+            >
+            </InputText>
+            <InputText
+              className={cx('item')}
+              title="Confirm new password"
+              value={confirmNewPassword}
+              onChange={(e) => { setConfirmNewPassword(e.target.value) }}
             >
             </InputText>
             <Button

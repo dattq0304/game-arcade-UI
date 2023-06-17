@@ -14,11 +14,33 @@ const cx = classNames.bind(styles);
 function SignUp({ handleClickCloseBtn, setActionToSignIn }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [cookies, setCookie] = useCookies(['token']);
 
   const handleSignUp = async (event) => {
     event.preventDefault();
+
+    if (username.trim() === "") {
+      alert("Please enter an username!");
+      return;
+    }
+
+    if (email.trim() === "") {
+      alert("Please enter an email!");
+      return;
+    }
+
+    if (password.trim() === "") {
+      alert("Please enter a password!");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert("Please confirm password!");
+      return;
+    }
+
     const res = await UserServices.signUp({
       username: username,
       password: password,
@@ -66,8 +88,8 @@ function SignUp({ handleClickCloseBtn, setActionToSignIn }) {
             className={cx('input-field')}
             title="Confirm Your Password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           ></InputText>
           <div className={cx("btn-wrapper")}>
             <Button className={cx("signup-btn")} type="submit" primary>
