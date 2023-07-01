@@ -6,10 +6,15 @@ import ReactGa from "react-ga4";
 import { publicRoutes } from "~/routes";
 import DefaultLayout from "~/layouts";
 
+ReactGa.initialize('G-BT4Y98K8N0');
+
 function App() {
   useEffect(() => {
-    ReactGa.initialize('G-BT4Y98K8N0');
-    ReactGa.send({ hitType: "pageview", page: document.location.pathname, title: "Home page" });
+    ReactGa.send({
+      hitType: "pageview",
+      page: document.location.pathname,
+      title: "Home page"
+    });
     // ReactGa.pageview(document.location.pathname);
 
     console.log("google-analytics");
