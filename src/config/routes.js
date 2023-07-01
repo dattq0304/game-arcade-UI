@@ -11,6 +11,7 @@ const routes = {
   demo: "/upload/demo/:id",
   allGames: "/admin/games",
   allUsers: "/admin/users",
+  playFrame: "/play/:id",
   notFound: "*"
 };
 

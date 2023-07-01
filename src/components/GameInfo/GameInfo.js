@@ -60,7 +60,7 @@ function GameInfo({ name, authorId, control, category, description, className, d
       <h2 className={cx("game-name")}>{name}</h2>
       <div className={cx('creator-container')} onClick={toogleShowDeveloperGames}>
         <div className={cx("creator")}>
-          <img className={cx("creator-image")} src={author.profile_image}></img>
+          <img className={cx("creator-image")} src={author.profile_image} alt="avatar"></img>
           <span>{author.username}</span>
           {showDeveloperGames && (
             <DeveloperGames toogleShowDeveloperGames={toogleShowDeveloperGames} authorId={authorId} authorName={author.username}></DeveloperGames>

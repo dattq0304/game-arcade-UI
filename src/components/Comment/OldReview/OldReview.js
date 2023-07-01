@@ -2,13 +2,12 @@ import classnames from "classnames/bind";
 import { useState, useEffect, useContext, useRef } from "react";
 
 import { UserContext } from "~/store/userContext";
-import styles from "./OldComment.module.scss";
+import styles from "./OldReview.module.scss";
 import * as UserService from "~/api/services/user";
-import * as CommentService from "~/api/services/comment";
 
 const cx = classnames.bind(styles);
 
-function OldComment({ comment, handleDeleteComment }) {
+function OldReview({ review, handleDeleteReview }) {
   const [isLoading, setIsLoading] = useState(null);
   const commentUsers = useRef();
   const user = useContext(UserContext);
@@ -17,7 +16,7 @@ function OldComment({ comment, handleDeleteComment }) {
   useEffect(() => {
     const getUser = async () => {
       setIsLoading(true);
-      const res = await UserService.getUser(comment.user_id);
+      const res = await UserService.getUser(review.user_id);
       commentUsers.current = res;
       setIsLoading(false);
     }
@@ -35,28 +34,29 @@ function OldComment({ comment, handleDeleteComment }) {
   return <div className={cx("wrapper")} ref={wrapperRef}>
     {commentUsers.current && <div className={cx("old-comment")} >
       <div className={cx("old-comment__profile")}>
-        <img src={commentUsers.current.profile_image} />
+        <img src={commentUsers.current.profile_image} alt="avatar" />
+        <div className={cx("stars")} style={{ "--rating": review.star }} aria-label="Rating of this product is 2.3 out of 5." />
       </div>
       <div className={cx("old-comment__main")}>
         <div className={cx("old-comment__header")}>
           <strong>{commentUsers.current.username}</strong>
-          <div className={cx("old-comment__date")}>{"at " + convertDate(comment.create_date)}</div>
+          <div className={cx("old-comment__date")}>{"at " + convertDate(review.date)}</div>
           {user && commentUsers.current._id === user._id &&
             <div
               className={cx("old-comment__actions")}
               onClick={() => {
                 wrapperRef.current.style.display = "none";
-                handleDeleteComment(comment._id);
+                handleDeleteReview(review._id);
               }}
             >
               Delete
             </div>
           }
         </div>
-        <div className={cx("old-comment__content")}>{comment.content}</div>
+        <div className={cx("old-comment__content")}>{review.content}</div>
       </div>
     </div>}
   </div >
 }
 
-export default OldComment;
+export default OldReview;

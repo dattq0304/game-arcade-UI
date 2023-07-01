@@ -1,7 +1,7 @@
 import config from "~/config";
 
 // Layouts
-import { NoSidebar } from "~/layouts";
+import { NoSidebar, OnlyContent } from "~/layouts";
 
 // Pages
 import Home from "~/pages/Home";
@@ -17,6 +17,7 @@ import Contact from "~/pages/Contact/Contact";
 import Privacy from "~/pages/Privacy/Privacy";
 import Terms from "~/pages/Terms/Terms";
 import NotFound from "~/pages/NotFound";
+import PlayFrame from "~/pages/PlayFrame/PlayFrame";
 
 // Public routes
 const publicRoutes = [
@@ -32,7 +33,8 @@ const publicRoutes = [
   { path: config.routes.contact, component: Contact, layout: NoSidebar },
   { path: config.routes.privacy, component: Privacy, layout: NoSidebar },
   { path: config.routes.terms, component: Terms, layout: NoSidebar },
-  { path: config.routes.notFound, component: NotFound, layout: NoSidebar }
+  { path: config.routes.notFound, component: NotFound, layout: NoSidebar },
+  { path: config.routes.playFrame, component: PlayFrame, layout: OnlyContent }
 ];
 
 const privateRoutes = [];

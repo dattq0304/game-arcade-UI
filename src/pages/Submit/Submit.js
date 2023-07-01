@@ -1,7 +1,7 @@
 import { useState, useRef, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import classNames from "classnames/bind";
-import jszip, { file } from "jszip";
+import jszip from "jszip";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import * as UploadServices from "~/api/services/upload";
