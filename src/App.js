@@ -9,7 +9,7 @@ import DefaultLayout from "~/layouts";
 function App() {
   useEffect(() => {
     ReactGa.initialize('G-BT4Y98K8N0');
-    ReactGa.send({ hitType: "pageview", page: document.location.pathname, title: "Custom Title" });
+    ReactGa.send({ hitType: "pageview", page: document.location.pathname, title: "Home page" });
     // ReactGa.pageview(document.location.pathname);
 
     console.log("google-analytics");
