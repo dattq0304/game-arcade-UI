@@ -46,7 +46,7 @@ function PlayFrame() {
 
   return (
     <div className={cx("wrapper")}>
-      <div className={cx("ad")} dangerouslySetInnerHTML={{ __html: adCode }} />
+      {/* <div className={cx("ad")} dangerouslySetInnerHTML={{ __html: adCode }} /> */}
       {/* <div className={cx("ad")}>
         This is adCode
       </div> */}
