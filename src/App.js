@@ -1,25 +1,10 @@
 import { Fragment } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
-import ReactGA from "react-ga4";
 
 import { publicRoutes } from "~/routes";
 import DefaultLayout from "~/layouts";
 
-ReactGA.initialize("G-BT4Y98K8N0");
-
 function App() {
-  useEffect(() => {
-    ReactGA.send({
-      hitType: "pageview",
-      page: document.location.pathname,
-      title: "Home page"
-    });
-    // ReactGA.pageview(document.location.pathname);
-
-    console.log("google-analytics");
-  }, []);
-
   return (
     <Router>
       <div className="App">

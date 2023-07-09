@@ -1,11 +1,8 @@
 import classNames from "classnames/bind";
 import { useState, useEffect } from "react";
-import { useLocation } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faClock,
-  faFutbolBall,
-} from "@fortawesome/free-regular-svg-icons";
+import { faClock, faFutbolBall } from "@fortawesome/free-regular-svg-icons";
 import {
   faArrowTrendUp,
   faShuffle,
@@ -21,6 +18,7 @@ import {
   faJetFighterUp,
   faUpRightFromSquare,
   faDice,
+  faThumbsUp,
 } from "@fortawesome/free-solid-svg-icons";
 import { faFreeCodeCamp } from "@fortawesome/free-brands-svg-icons";
 
@@ -38,13 +36,13 @@ function Sidebar(props) {
     const query = location.search;
     if (query.length === 0 || query === "?type=Home") {
       setActive("Home");
-    } else if (query.split('=')[0] === "?type") {
+    } else if (query.split("=")[0] === "?type") {
       const type = query.split("=")[1];
       setActive(decodeURIComponent(type));
-    } else if (query.split('=')[0] === "?category") {
+    } else if (query.split("=")[0] === "?category") {
       const category = query.split("=")[1];
       setActive(decodeURIComponent(category));
-    } else if (query.split('=')[0] === "?search") {
+    } else if (query.split("=")[0] === "?search") {
       setActive("Home");
     }
   }, [location]);
@@ -53,22 +51,27 @@ function Sidebar(props) {
     {
       leftIcon: faHouse,
       title: "Home",
-      type: "Home"
+      type: "Home",
     },
     {
       leftIcon: faClock,
       title: "New",
-      type: "new"
+      type: "new",
     },
     {
       leftIcon: faShuffle,
       title: "Random",
-      type: "random"
+      type: "random",
     },
     {
       leftIcon: faArrowTrendUp,
+      title: "Popular",
+      type: "popular",
+    },
+    {
+      leftIcon: faThumbsUp,
       title: "Top rated",
-      type: "topRated"
+      type: "topRated",
     },
   ];
 
@@ -148,7 +151,7 @@ function Sidebar(props) {
             </MenuItem>
           );
         })}
-        <div className={cx('spread')}></div>
+        <div className={cx("spread")}></div>
         {menuCategory.map(function (element, index) {
           return (
             <MenuItem

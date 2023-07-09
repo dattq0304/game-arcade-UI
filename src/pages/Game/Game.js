@@ -29,24 +29,22 @@ function Game() {
   useEffect(() => {
     const getGame = async () => {
       try {
-        GameServices.getGameById(id)
-          .then(res => {
-            setName(res.name);
-            setDescription(res.description);
-            setControl(res.control);
-            setGameId(res._id);
-            setCategory(res.category);
-            setAuthorId(res.creator_id);
-            setDate(res.modified_date);
-            if (res.type === "HTML5") {
-              setPath(`${process.env.REACT_APP_API_URL}/game/${id}/index.html`);
-            } else {
-              setPath(res.path);
-            }
-            setReady(true);
-          })
-      }
-      catch (err) {
+        GameServices.getGameById(id).then((res) => {
+          setName(res.name);
+          setDescription(res.description);
+          setControl(res.control);
+          setGameId(res._id);
+          setCategory(res.category);
+          setAuthorId(res.creator_id);
+          setDate(res.modified_date);
+          if (res.type === "HTML5") {
+            setPath(`${process.env.REACT_APP_API_URL}/game/${id}/index.html`);
+          } else {
+            setPath(res.path);
+          }
+          setReady(true);
+        });
+      } catch (err) {
         console.error("getGame - Client", err);
       }
     };
@@ -55,29 +53,41 @@ function Game() {
 
   return (
     <>
-      {gameId && <div className={cx("wrapper")} style={{ backgroundImage: `url('${coverImageUrl + "/" + gameId}')` }}>
-        <div className={cx("overlay")} >
-          <div className={cx("inner")} key={gameId}>
-            {ready && <div className={cx("main-content")}>
-              <GamePlay src={path} gameId={gameId}></GamePlay>
-              <GameInfo
-                name={name}
-                control={control}
-                date={date}
-                description={description}
-                className={cx("detail")}
-                authorId={authorId}
-                category={category}
-              ></GameInfo>
-              <Comment gameId={gameId} />
-            </div>}
+      {gameId && (
+        <div
+          className={cx("wrapper")}
+          style={{ backgroundImage: `url('${coverImageUrl + "/" + gameId}')` }}
+        >
+          <div className={cx("overlay")}>
+            <div className={cx("inner")} key={gameId}>
+              {ready && (
+                <div className={cx("main-content")}>
+                  <GamePlay src={path} gameId={gameId}></GamePlay>
+                  <GameInfo
+                    gameId={gameId}
+                    name={name}
+                    control={control}
+                    date={date}
+                    description={description}
+                    className={cx("detail")}
+                    authorId={authorId}
+                    category={category}
+                  ></GameInfo>
+                  <Comment gameId={gameId} />
+                </div>
+              )}
 
-            <div className={cx("recommened")}>
-              <GameRecommend title="Games Recommend" type="Random" size={24}></GameRecommend>
+              <div className={cx("recommened")}>
+                <GameRecommend
+                  title="Games Recommend"
+                  type="Random"
+                  size={24}
+                ></GameRecommend>
+              </div>
             </div>
           </div>
         </div>
-      </div>}
+      )}
     </>
   );
 }
